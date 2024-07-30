@@ -5,4 +5,5 @@ export const command = new SlashCommandBuilder().setName('ping').setDescription(
 export const action = async (ctx) => 
     {
         ctx.reply('Pong!');
+        console.log('Pong!');
     };
