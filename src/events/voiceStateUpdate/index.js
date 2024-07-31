@@ -215,12 +215,12 @@ client.on(Events.InteractionCreate, async interaction => {
             // Update the permission overwrites for the voice channel to hide it
             await voiceChannel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: false });
             await interaction.reply({ content: '隱藏語音頻道了喔!', ephemeral: true });
-            console.log(`Voice channel ${voiceChannel.name} hidden`);
+            //console.log(`Voice channel ${voiceChannel.name} hidden`);
         } else if (interaction.customId === 'unlock_channel') {
             // Update the permission overwrites for the voice channel to unlock it
             await voiceChannel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: true });
             await interaction.reply({ content: '顯示語音頻道了喔!', ephemeral: true });
-            console.log(`Voice channel ${voiceChannel.name} unlocked`);
+            //console.log(`Voice channel ${voiceChannel.name} unlocked`);
         } else if (interaction.customId === 'set_user_limit') {
             // Create a select menu for user limit
             const selectMenu = new StringSelectMenuBuilder()
