@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import { useAppStore } from '@/store/app';
 import { loadCommands, loadEvents } from '@/core/loader';
 
+console.log('CLIENT_ID:', process.env.CLIENT_ID);
+console.log('GUILD_ID:', process.env.GUILD_ID);
+console.log('TOKEN:', process.env.TOKEN);
 vueInit();
 dotenv.config();
 
