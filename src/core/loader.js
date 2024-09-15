@@ -6,16 +6,15 @@ import { useAppStore } from '@/store/app'
 const updateSlashCommands = async(commands) => {
     const rest = new REST({version: 10}).setToken(process.env.TOKEN);
     const result = await rest.put(
-        Routes.applicationGuildCommands(
-            process.env.CLIENT_ID,
-            process.env.GUILD_ID
+        Routes.applicationCommands(
+            process.env.CLIENT_ID
         ),
         {
             body: commands,
         }
-    )
+    );
 
-    console.log(result)
+    console.log(result);
 }
 
 export const loadCommands = async() => {
@@ -64,4 +63,7 @@ export const loadEvents = async () => {
             client.on(eventFile.event.name, eventFile.action);
         }
     }
+//     const timeEventFile = await import('./src/events/time/Timeindex.js');
+//     console.log(`Loading time event: ${timeEventFile.event.name}`);
+//     timeEventFile.action(client);  // 确保这里正确调用
 };

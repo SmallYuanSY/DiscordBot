@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 // 設定基礎資料夾路徑
-const baseConfigPath = './src/config/';
+const baseConfigPath = path.resolve(__dirname, '../config');  // 确保指向的是 config 目录
 
 // 初始化伺服器資料夾與文件
 export const initServerConfig = (guildId, configFileName) => {

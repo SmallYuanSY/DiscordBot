@@ -12,96 +12,112 @@ export const event = {
 let intervalId;
 
 export const action = async (oldState, newState) => {
-    const appStore = useAppStore();
     const guildId = newState.guild.id;
+    const tempVoiceConfig = loadServerConfig(guildId, 'tempVoice.json');  // 加载 tempVoice.json 配置
+    const targetChannelId = tempVoiceConfig ? tempVoiceConfig.targetChannelId : null;
 
-    // 加載伺服器的 config 和 tempVoice 配置文件
-    const config = loadServerConfig(guildId, 'config.json');
-    const tempVoiceConfig = loadServerConfig(guildId, 'tempVoice.json');
-    const targetChannelId = config.targetChannelId;  // 從配置文件中獲取 targetChannelId
+    if (!newState.member || !newState.channel) return;
 
-    if (!newState.member || !newState.channel) {
-        console.error('新狀態成員或頻道未定義');
-        return;
-    }
-
-    console.log(`${newState.member.user.username} 加入了語音頻道 ${newState.channel.name}`);
-
-    // 檢查新狀態的語音頻道是否為目標頻道
     if (newState.channelId === targetChannelId && oldState.channelId !== targetChannelId) {
         try {
             const guild = newState.guild;
             const member = newState.member;
-            const newChannelName = `${member.displayName}的語音頻道`;
+            const newChannelName = `${member.displayName}的臨時頻道`;
 
-            // 清除已有的 interval
+            // Clear any existing interval
             if (intervalId) {
                 clearInterval(intervalId);
+                //console.log('Cleared existing interval');
             }
 
-            // 檢查是否已經有一個創建的頻道
-            let userChannel = guild.channels.cache.find(channel => channel.name === newChannelName && channel.type === ChannelType.GuildVoice);
+            // 创建语音频道
+            let userVoiceChannel = await guild.channels.create({
+                name: newChannelName,
+                type: ChannelType.GuildVoice,
+                parent: newState.channel.parent,  // 使用相同的类目
+                permissionOverwrites: [
+                    {
+                        id: member.id,
+                        allow: [PermissionFlagsBits.Connect, PermissionFlagsBits.Speak, PermissionFlagsBits.ManageChannels],
+                    },
+                    {
+                        id: guild.id,
+                        deny: [PermissionFlagsBits.ViewChannel],
+                    }
+                ],
+            });
 
-            if (!userChannel) {
-                // 創建新語音頻道
-                userChannel = await guild.channels.create({
-                    name: newChannelName,
-                    type: ChannelType.GuildVoice,
-                    parent: newState.channel.parent, // 使用同樣的類別
-                    permissionOverwrites: [
-                        {
-                            id: member.id,
-                            allow: [PermissionFlagsBits.Connect, PermissionFlagsBits.Speak, PermissionFlagsBits.ManageChannels],
-                        },
-                        {
-                            id: guild.id,
-                            deny: [PermissionFlagsBits.ViewChannel],
-                        }
-                    ],
-                });
+            // 创建对应的文字频道
+            let userTextChannel = await guild.channels.create({
+                name: `${member.displayName}-文字頻道`,
+                type: ChannelType.GuildText,
+                parent: newState.channel.parent,
+                permissionOverwrites: [
+                    {
+                        id: member.id,
+                        allow: [PermissionFlagsBits.ViewChannel, PermissionFlagsBits.SendMessages, PermissionFlagsBits.ManageChannels],
+                    },
+                    {
+                        id: guild.id,
+                        deny: [PermissionFlagsBits.ViewChannel],
+                    }
+                ],
+            });
 
-                // 更新配置文件中的 tempVoiceChannels
-                tempVoiceConfig.tempVoiceChannels.push(userChannel.id);
-                updateServerConfig(guildId, tempVoiceConfig, 'tempVoice.json');
+            // 如果没有 tempVoiceChannels 列表，则初始化
+            if (!tempVoiceConfig.tempVoiceChannels) tempVoiceConfig.tempVoiceChannels = [];
 
-                console.log(`為 ${member.displayName} 創建了語音頻道: ${userChannel.name}`);
-            }
+            // 将新创建的语音频道和文字频道信息存储到 tempVoice.json
+            tempVoiceConfig.tempVoiceChannels.push({
+                voiceChannelId: userVoiceChannel.id,
+                textChannelId: userTextChannel.id,
+            });
 
-            // 每隔60秒檢查一次是否有空頻道需要刪除
-            intervalId = setInterval(() => {
-                checkChannelEmpty(guild);
-            }, 60000);
+            // 保存更新到 JSON 文件
+            updateServerConfig(guildId, 'tempVoice.json', tempVoiceConfig);
 
+            console.log(`為 ${member.displayName} 創建了語音頻道: ${userVoiceChannel.name} 和文字頻道: ${userTextChannel.name}`);
+
+            // Add a short delay to ensure the channel is created
+            await new Promise(resolve => setTimeout(resolve, 100));
+
+            // Move the user to their channel
+            await newState.member.voice.setChannel(userVoiceChannel);
+
+            // Restart the interval to check for empty channels
+            intervalId = setInterval(() => checkAndDeleteEmptyChannels(newState.guild), 3000);
         } catch (error) {
-            console.error('創建語音頻道失敗:', error);
+            console.error('創建語音或文字頻道失敗:', error);
         }
     }
 };
 
-// 檢查並刪除空的臨時語音頻道
-const checkChannelEmpty = async (guild) => {
-    const guildId = guild.id;
-    const tempVoiceConfig = loadServerConfig(guildId, 'tempVoice.json');
-
-    // 遍歷臨時語音頻道，檢查是否為空
-    tempVoiceConfig.tempVoiceChannels.forEach(async (channelId, index) => {
-        const voiceChannel = guild.channels.cache.get(channelId);
+export const checkAndDeleteEmptyChannels = async (guild) => {
+    const config = loadServerConfig(guild.id, 'tempVoice.json');
+    
+    for (const channelInfo of config.tempVoiceChannels) {
+        const voiceChannel = guild.channels.cache.get(channelInfo.voiceChannelId);
+        const textChannel = guild.channels.cache.get(channelInfo.textChannelId);
 
         if (voiceChannel && voiceChannel.members.size === 0) {
-            // 延遲刪除操作，等待可能的重新加入
-            setTimeout(async () => {
-                // 再次檢查頻道是否仍然無人
-                if (voiceChannel.members.size === 0) {
-                    await voiceChannel.delete();
-                    console.log(`刪除空的臨時語音頻道: ${voiceChannel.name}`);
+            try {
+                await voiceChannel.delete();
+                await textChannel.delete();
 
-                    // 從 tempVoiceConfig 中刪除已刪除的頻道
-                    tempVoiceConfig.tempVoiceChannels.splice(index, 1);
-                    updateServerConfig(guildId, tempVoiceConfig, 'tempVoice.json');
-                }
-            }, 60000);  // 延遲 60 秒後執行刪除操作
+                // 刪除後從 config 中移除該頻道
+                config.tempVoiceChannels = config.tempVoiceChannels.filter(
+                    channel => channel.voiceChannelId !== channelInfo.voiceChannelId
+                );
+
+                // 更新配置文件
+                updateServerConfig(guild.id, 'tempVoice.json', config);
+
+                console.log(`已刪除語音和文字頻道: ${voiceChannel.name}`);
+            } catch (error) {
+                console.error('刪除臨時頻道失敗:', error);
+            }
         }
-    });
+    }
 };
 
 // Interaction (Button and Select Menu) handling
