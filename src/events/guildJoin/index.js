@@ -14,5 +14,6 @@ export const action = async (client) => {
         // 初始化伺服器的配置文件，例如 roleMap.json 和 tempVoice.json
         initServerConfig(guild.id, 'roleMap.json');
         initServerConfig(guild.id, 'tempVoice.json');
+        initServerConfig(guild.id, 'welcome.json');
     });
 };

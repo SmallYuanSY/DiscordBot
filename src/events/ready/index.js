@@ -1,6 +1,4 @@
 import { Events } from "discord.js";
-import { checkAndDeleteEmptyChannels } from "@/events/voiceStateUpdate/index.js";
-import { loadServerConfig, updateServerConfig } from '@/core/config.js';
 
 
 export const event = {
