@@ -83,4 +83,4 @@ export const action = async (ctx) => {
         // 回覆給使用者已成功發送
         await ctx.reply({ content: `已成功發送嵌入訊息到 ${channel.name}`, ephemeral: true });
     }
-};
+}

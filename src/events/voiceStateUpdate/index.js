@@ -77,12 +77,30 @@ export const action = async (oldState, newState) => {
             updateServerConfig(guildId, 'tempVoice.json', tempVoiceConfig);
 
             console.log(`為 ${member.displayName} 創建了語音頻道: ${userVoiceChannel.name} 和文字頻道: ${userTextChannel.name}`);
-
             // Add a short delay to ensure the channel is created
             await new Promise(resolve => setTimeout(resolve, 100));
 
             // Move the user to their channel
             await newState.member.voice.setChannel(userVoiceChannel);
+
+            // Create a button to hide and show the channel
+            const hideButton = new ButtonBuilder()
+                .setCustomId('tempvoice_hide_channel')
+                .setLabel('隱藏頻道')
+                .setStyle(ButtonStyle.Danger);
+            const unlockButton = new ButtonBuilder()
+                .setCustomId('tempvoice_unlock_channel')
+                .setLabel('顯示頻道')
+                .setStyle(ButtonStyle.Success);
+            const userLimitButton = new ButtonBuilder()
+                .setCustomId('tempvoice_set_user_limit')
+                .setLabel('設置人數限制')
+                .setStyle(ButtonStyle.Primary);
+
+            const row = new ActionRowBuilder()
+                .addComponents(hideButton, unlockButton, userLimitButton);
+            
+            await userTextChannel.send({ content: '歡迎來到你的臨時頻道!', components: [row] });
 
             // Restart the interval to check for empty channels
             intervalId = setInterval(() => checkAndDeleteEmptyChannels(newState.guild), 3000);
@@ -124,56 +142,69 @@ export const checkAndDeleteEmptyChannels = async (guild) => {
 
 client.on(Events.InteractionCreate, async interaction => {
     if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
+    if (interaction.customId.startsWith('tempvoice') || interaction.customId.startsWith('select_user_limit')) {
+        if (!interaction.replied && !interaction.deferred) {
+            if (!interaction.isButton() && !interaction.isStringSelectMenu()) return;
 
-    const member = interaction.member;
-    const voiceChannel = member.voice.channel;
+            const member = interaction.member;
+            const voiceChannel = member.voice.channel;
 
-    if (!voiceChannel) {
-        await interaction.reply({ content: 'You are not in a voice channel!', ephemeral: true });
-        return;
-    }
+            try {
+                if (interaction.customId === 'tempvoice_hide_channel') {
+                    // 隱藏語音頻道
+                    if (!voiceChannel) {
+                        await interaction.reply({ content: '請先加入語音頻道再進行操作', ephemeral: true });
+                        return;
+                    }
+                    await voiceChannel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: false });
+                    await interaction.reply({ content: '隱藏語音頻道了喔!', ephemeral: true });
+                } else if (interaction.customId === 'tempvoice_unlock_channel') {
+                    // 顯示語音頻道
+                    if (!voiceChannel) {
+                        await interaction.reply({ content: '請先加入語音頻道再進行操作', ephemeral: true });
+                        return;
+                    }
+                    await voiceChannel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: true });
+                    await interaction.reply({ content: '顯示語音頻道了喔!', ephemeral: true });
+                } else if (interaction.customId === 'tempvoice_set_user_limit') {
+                    // 創建選單設置人數限制
+                    if (!voiceChannel) {
+                        await interaction.reply({ content: '請先加入語音頻道再進行操作', ephemeral: true });
+                        return;
+                    }
+                    const selectMenu = new StringSelectMenuBuilder()
+                        .setCustomId('select_user_limit')
+                        .setPlaceholder('Select user limit')
+                        .addOptions([
+                            { label: '1', value: '1' },
+                            { label: '2', value: '2' },
+                            { label: '3', value: '3' },
+                            { label: '4', value: '4' },
+                            { label: '5', value: '5' },
+                            { label: '6', value: '6' },
+                            { label: '7', value: '7' },
+                            { label: '8', value: '8' },
+                            { label: '9', value: '9' },
+                            { label: '10', value: '10' },
+                        ]);
 
-    try {
-        if (interaction.customId === 'hide_channel') {
-            // 隱藏語音頻道
-            await voiceChannel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: false });
-            await interaction.reply({ content: '隱藏語音頻道了喔!', ephemeral: true });
-        } else if (interaction.customId === 'unlock_channel') {
-            // 顯示語音頻道
-            await voiceChannel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: true });
-            await interaction.reply({ content: '顯示語音頻道了喔!', ephemeral: true });
-        } else if (interaction.customId === 'set_user_limit') {
-            // 創建選單設置人數限制
-            const selectMenu = new StringSelectMenuBuilder()
-                .setCustomId('select_user_limit')
-                .setPlaceholder('Select user limit')
-                .addOptions([
-                    { label: '1', value: '1' },
-                    { label: '2', value: '2' },
-                    { label: '3', value: '3' },
-                    { label: '4', value: '4' },
-                    { label: '5', value: '5' },
-                    { label: '6', value: '6' },
-                    { label: '7', value: '7' },
-                    { label: '8', value: '8' },
-                    { label: '9', value: '9' },
-                    { label: '10', value: '10' },
-                ]);
+                    const row = new ActionRowBuilder().addComponents(selectMenu);
 
-            const row = new ActionRowBuilder().addComponents(selectMenu);
-
-            await interaction.reply({
-                content: '請選擇能夠進來的人數為:',
-                components: [row],
-                ephemeral: true
-            });
-        } else if (interaction.customId === 'select_user_limit') {
-            const userLimit = parseInt(interaction.values[0], 10);
-            await voiceChannel.setUserLimit(userLimit);
-            await interaction.update({ content: `調整能夠進來的人數為 ${userLimit}`, components: [], ephemeral: true });
+                    await interaction.reply({
+                        content: '請選擇能夠進來的人數為:',
+                        components: [row],
+                        ephemeral: true
+                    });
+                } else if (interaction.customId === 'select_user_limit') {
+                    const userLimit = parseInt(interaction.values[0], 10);
+                    await voiceChannel.setUserLimit(userLimit);
+                    await interaction.update({ content: `調整能夠進來的人數為 ${userLimit}`, components: [], ephemeral: true });
+                }
+            } catch (error) {
+                console.error('Failed to update voice channel permissions or user limit:', error);
+                await interaction.reply({ content: 'Failed to update voice channel settings.', ephemeral: true });
+            }
         }
-    } catch (error) {
-        console.error('Failed to update voice channel permissions or user limit:', error);
-        await interaction.reply({ content: 'Failed to update voice channel settings.', ephemeral: true });
     }
+    
 });

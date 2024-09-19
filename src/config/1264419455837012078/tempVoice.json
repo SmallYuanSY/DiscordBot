@@ -1,4 +1,9 @@
 {
   "targetChannelId": "1267764893961158656",
-  "tempVoiceChannels": []
+  "tempVoiceChannels": [
+    {
+      "voiceChannelId": "1286374295605477432",
+      "textChannelId": "1286374297417289819"
+    }
+  ]
 }

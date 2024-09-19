@@ -7,7 +7,7 @@ export const event = {
 };
 
 export const action = async (client) => {
-    console.log('Bot is ready!');
+    //console.log('Bot is ready!');
 
     // 為每個已加入的伺服器初始化配置文件
     client.guilds.cache.forEach(guild => {
@@ -15,5 +15,8 @@ export const action = async (client) => {
         initServerConfig(guild.id, 'roleMap.json');
         initServerConfig(guild.id, 'tempVoice.json');
         initServerConfig(guild.id, 'welcome.json');
+        initServerConfig(guild.id, 'leave.json');
+        initServerConfig(guild.id, 'reactionRole.json');
+        initServerConfig(guild.id, 'fishing.json');
     });
 };

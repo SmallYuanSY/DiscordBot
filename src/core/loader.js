@@ -1,69 +1,83 @@
-import { REST, Routes, Collection } from 'discord.js'
-import fg from 'fast-glob'
-import { useAppStore } from '@/store/app'
+import { REST, Routes, Collection } from 'discord.js';
+import fg from 'fast-glob';
+import { useAppStore } from '@/store/app';
+import fs from 'fs';
+import path from 'path';
 
-
-const updateSlashCommands = async(commands) => {
-    const rest = new REST({version: 10}).setToken(process.env.TOKEN);
+// 更新每個伺服器的 Slash 命令
+const updateSlashCommands = async (guildId, commands) => {
+    const rest = new REST({ version: 10 }).setToken(process.env.TOKEN);
     const result = await rest.put(
-        Routes.applicationCommands(
-            process.env.CLIENT_ID
+        Routes.applicationGuildCommands(
+            process.env.CLIENT_ID,
+            guildId  // 為每個伺服器註冊命令
         ),
         {
             body: commands,
         }
     );
-
+    console.log(`Commands updated for guild: ${guildId}`);
     console.log(result);
-}
+};
 
-export const loadCommands = async() => {
+// 讀取所有命令並註冊到各伺服器
+export const loadCommands = async () => {
     const appStore = useAppStore();
     const commands = [];
     const actions = new Collection();
-    const files = await fg('./src/commands/**/index.js');
 
-    for(const file of files){
+    // 找到 `src/commands` 資料夾下的所有指令
+    const files = await fg('./src/commands/**/index.js');
+    
+    for (const file of files) {
         const cmd = await import(file);
 
-        // 檢查命令是否包含名稱和描述
+        // 確保每個命令都有名稱和描述
         if (!cmd.command.name || !cmd.command.description) {
             console.error(`Command in file ${file} is missing a name or description`);
-            continue; // 跳過無效的命令
+            continue; // 跳過無效命令
         }
 
-        // 打印命令的結構以進行調試
+        // 打印命令結構進行調試
         console.log('Registering command:', cmd.command);
 
         commands.push(cmd.command);
         actions.set(cmd.command.name, cmd.action);
     }
 
-    // 確保命令數組不為空，然後註冊命令
-    if (commands.length > 0) {
-        await updateSlashCommands(commands);
-    } else {
-        console.error('No valid commands to register');
+    // 如果沒有找到任何命令，則終止
+    if (commands.length === 0) {
+        console.error('No valid commands found to register.');
+        return;
     }
 
+    // 找到 `config/` 目錄下的所有 guildId 資料夾
+    const guildConfigs = fs.readdirSync('./src/config').filter(file => fs.statSync(path.join('./src/config', file)).isDirectory());
+
+    // 針對每個 guildId 註冊命令
+    for (const guildId of guildConfigs) {
+        await updateSlashCommands(guildId, commands);
+    }
+
+    // 保存命令操作映射
     appStore.commandsActionMap = actions;
     console.log(appStore.commandsActionMap);
-}
+};
 
+// 載入事件
 export const loadEvents = async () => {
     const appStore = useAppStore();
     const client = appStore.client;
     const files = await fg('./src/events/**/index.js');
+
     for (const file of files) {
         const eventFile = await import(file);
         console.log(`Loading event: ${eventFile.event.name}`);
+
         if (eventFile.event.once) {
             client.once(eventFile.event.name, eventFile.action);
         } else {
             client.on(eventFile.event.name, eventFile.action);
         }
     }
-//     const timeEventFile = await import('./src/events/time/Timeindex.js');
-//     console.log(`Loading time event: ${timeEventFile.event.name}`);
-//     timeEventFile.action(client);  // 确保这里正确调用
 };
