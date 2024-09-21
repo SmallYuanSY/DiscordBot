@@ -4,11 +4,11 @@
   "level": 1,
   "money": 1545,
   "experience": 118,
-  "currentRod": "初級魚竿 <:fishing_rod:1286423711385129041>",
+  "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
   "currentBiome": "淡水河",
   "backpack": [
     {
-      "name": "初級魚竿 <:fishing_rod:1286423711385129041>",
+      "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1
@@ -17,7 +17,7 @@
       "name": "魚餌 <:worm:1286420915772719237>",
       "rarity": "common",
       "experience": 0,
-      "price": 0,
+      "price": 5,
       "quantity": 21
     },
     {

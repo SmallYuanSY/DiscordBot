@@ -3,12 +3,12 @@
   "userName": "腦殘小弟",
   "level": 1,
   "money": 1035,
-  "experience": 528,
-  "currentRod": "初級魚竿 <:fishing_rod:1286423711385129041>",
+  "experience": 574,
+  "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
   "currentBiome": "淡水河",
   "backpack": [
     {
-      "name": "初級魚竿 <:fishing_rod:1286423711385129041>",
+      "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1
@@ -17,11 +17,11 @@
       "name": "魚餌 <:worm:1286420915772719237>",
       "rarity": "common",
       "experience": 0,
-      "price": 0,
-      "quantity": 1010
+      "price": 5,
+      "quantity": 993
     },
     {
-      "name": "金釣竿<:gold_fishing_rod_uncast:1286423686882132062>",
+      "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
       "rarity": "unique",
       "experience": 0,
       "price": 0,
@@ -32,21 +32,35 @@
       "rarity": "rare",
       "experience": 3,
       "price": 30,
-      "quantity": 1
+      "quantity": 6
     },
     {
-      "name": "鮭魚 <:salmon:1286420124508622990>",
+      "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
       "rarity": "common",
       "experience": 1,
       "price": 10,
-      "quantity": 2
+      "quantity": 7
+    },
+    {
+      "name": "河鱸魚 <:perch:1286419981327929407>",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 20,
+      "quantity": 3
+    },
+    {
+      "name": "河豚 <:pufferfish:1286420045106515978>",
+      "rarity": "legendary",
+      "experience": 5,
+      "price": 50,
+      "quantity": 4
     }
   ],
   "biome": "River",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1726899213567,
+  "timer": 1726922001234,
   "lastDailyReward": "2024-09-21T04:21:08.597Z",
-  "hexTime": "66ee720f"
+  "hexTime": "66eebcfe"
 }

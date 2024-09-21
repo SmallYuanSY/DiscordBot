@@ -2,13 +2,13 @@
   "userId": "573864447148425228",
   "userName": "我想睡一夏",
   "level": 1,
-  "money": 2325,
-  "experience": 233,
-  "currentRod": "初級魚竿 <:fishing_rod:1286423711385129041>",
+  "money": 1920,
+  "experience": 559,
+  "currentRod": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
   "currentBiome": "淡水河",
   "backpack": [
     {
-      "name": "初級魚竿 <:fishing_rod:1286423711385129041>",
+      "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1
@@ -17,14 +17,37 @@
       "name": "魚餌 <:worm:1286420915772719237>",
       "rarity": "common",
       "experience": 0,
+      "price": 5,
+      "quantity": 8
+    },
+    {
+      "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
+      "rarity": "unique",
+      "experience": 0,
       "price": 0,
-      "quantity": 27
+      "quantity": 1
+    },
+    {
+      "name": "雀鱔 <:gar:1286419810179223613>",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 25,
+      "quantity": 2
+    },
+    {
+      "name": "河鱸魚 <:perch:1286419981327929407>",
+      "rarity": "common",
+      "experience": 2,
+      "price": 20,
+      "quantity": 2
     }
   ],
   "biome": "River",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1726855962239,
-  "lastDailyReward": "2024-09-20T11:08:56.813Z"
+  "timer": 1726947379700,
+  "lastDailyReward": "2024-09-21",
+  "hexTime": "66ef2043",
+  "mythicalFishCaught": []
 }

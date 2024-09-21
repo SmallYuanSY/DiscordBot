@@ -2,13 +2,13 @@
   "userId": "1147481238219784252",
   "userName": "麻糬",
   "level": 1,
-  "money": 300,
-  "experience": 5,
-  "currentRod": "初級魚竿 <:fishing_rod:1286423711385129041>",
+  "money": 40,
+  "experience": 360,
+  "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
   "currentBiome": "淡水河",
   "backpack": [
     {
-      "name": "初級魚竿 <:fishing_rod:1286423711385129041>",
+      "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1
@@ -17,21 +17,28 @@
       "name": "魚餌 <:worm:1286420915772719237>",
       "rarity": "common",
       "experience": 0,
-      "price": 0,
-      "quantity": 8
+      "price": 5,
+      "quantity": 96
     },
     {
-      "name": "鱈魚 <:cod:1286418503825358899> ",
-      "rarity": "uncommon",
-      "experience": 2,
-      "price": 20,
+      "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
       "quantity": 1
     },
     {
-      "name": "鯉魚 <:carp:1286418428374024323>",
-      "rarity": "rare",
-      "experience": 3,
-      "price": 30,
+      "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
+      "rarity": "common",
+      "experience": 1,
+      "price": 10,
+      "quantity": 1
+    },
+    {
+      "name": "河豚 <:pufferfish:1286420045106515978>",
+      "rarity": "legendary",
+      "experience": 5,
+      "price": 50,
       "quantity": 1
     }
   ],
@@ -39,6 +46,7 @@
   "canGoBiome": [
     "River"
   ],
-  "timer": 1726897805795,
-  "lastDailyReward": "2024-09-21T05:49:37.639Z"
+  "timer": 1726920523355,
+  "lastDailyReward": "2024-09-21",
+  "hexTime": "66eeba4d"
 }
