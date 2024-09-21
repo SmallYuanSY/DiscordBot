@@ -1,0 +1,30 @@
+{
+  "userId": "573864447148425228",
+  "userName": "我想睡一夏",
+  "level": 1,
+  "money": 2325,
+  "experience": 233,
+  "currentRod": "初級魚竿 <:fishing_rod:1286423711385129041>",
+  "currentBiome": "淡水河",
+  "backpack": [
+    {
+      "name": "初級魚竿 <:fishing_rod:1286423711385129041>",
+      "rarity": "unique",
+      "experience": 0,
+      "quantity": 1
+    },
+    {
+      "name": "魚餌 <:worm:1286420915772719237>",
+      "rarity": "common",
+      "experience": 0,
+      "price": 0,
+      "quantity": 27
+    }
+  ],
+  "biome": "River",
+  "canGoBiome": [
+    "River"
+  ],
+  "timer": 1726855962239,
+  "lastDailyReward": "2024-09-20T11:08:56.813Z"
+}

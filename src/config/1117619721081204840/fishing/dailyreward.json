@@ -1,0 +1,57 @@
+{
+    "1": {
+      "money": 100,
+      "items": [
+        {
+            "name": "魚餌 <:worm:1286420915772719237>",
+            "quantity": 10,
+            "experience": 0,
+            "price": 0,
+            "rarity": "common",
+            "description": "基礎魚餌\n沒有他將無法釣魚喔"
+        }
+      ]
+    },
+    "2": {
+      "money": 100,
+      "items": []
+    },
+    "3": {
+      "money": 100,
+      "items": []
+    },
+    "4": {
+      "money": 100,
+      "items": []
+    },
+    "5": {
+      "money": 100,
+      "items": [
+        {
+            "name": "魚餌 <:worm:1286420915772719237>",
+            "quantity": 10,
+            "experience": 0,
+            "price": 0,
+            "rarity": "common",
+            "description": "基礎魚餌\n沒有他將無法釣魚喔"
+        }
+      ]
+    },
+    "6": {
+      "money": 300,
+      "items": [
+        {
+            "name": "魚餌 <:worm:1286420915772719237>",
+            "quantity": 10,
+            "experience": 0,
+            "price": 0,
+            "rarity": "common",
+            "description": "基礎魚餌\n沒有他將無法釣魚喔"
+        }
+      ]
+    },
+    "0": {
+      "money": 300,
+      "items": []
+    }
+  }

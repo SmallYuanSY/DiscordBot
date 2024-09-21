@@ -1,0 +1,65 @@
+{
+  "userId": "616498144850477071",
+  "userName": "Est",
+  "level": 1,
+  "money": 30,
+  "experience": 543,
+  "currentRod": "初級魚竿 <:fishing_rod:1286423711385129041>",
+  "currentBiome": "淡水河",
+  "backpack": [
+    {
+      "name": "初級魚竿 <:fishing_rod:1286423711385129041>",
+      "rarity": "unique",
+      "experience": 0,
+      "quantity": 1
+    },
+    {
+      "name": "魚餌 <:worm:1286420915772719237>",
+      "rarity": "common",
+      "experience": 0,
+      "price": 0,
+      "quantity": 351
+    },
+    {
+      "name": "金釣竿<:gold_fishing_rod_uncast:1286423686882132062>",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
+      "quantity": 1
+    },
+    {
+      "name": "鮭魚 <:salmon:1286420124508622990>",
+      "rarity": "common",
+      "experience": 1,
+      "price": 10,
+      "quantity": 11
+    },
+    {
+      "name": "河豚 <:pufferfish:1286420045106515978>",
+      "rarity": "legendary",
+      "experience": 5,
+      "price": 50,
+      "quantity": 18
+    },
+    {
+      "name": "鯉魚 <:carp:1286418428374024323>",
+      "rarity": "rare",
+      "experience": 3,
+      "price": 30,
+      "quantity": 11
+    },
+    {
+      "name": "鱈魚 <:cod:1286418503825358899> ",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 20,
+      "quantity": 10
+    }
+  ],
+  "biome": "River",
+  "canGoBiome": [
+    "River"
+  ],
+  "timer": 1726861491882,
+  "lastDailyReward": "2024-09-20T15:54:45.296Z"
+}

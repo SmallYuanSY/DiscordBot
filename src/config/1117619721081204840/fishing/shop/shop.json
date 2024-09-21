@@ -1,0 +1,32 @@
+{
+    "items": [
+      {
+        "name": "金釣竿<:gold_fishing_rod_uncast:1286423686882132062>",
+        "price": 0,
+        "sellPrice": 4000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "description": "金制釣竿\n或許可以釣到更多的東西"
+      },
+      {
+        "name": "鑽石釣竿<:diamond_fishing_rod_uncast:1286423662957695086>",
+        "price": 0,
+        "sellPrice": 89000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "description": "鑽石釣竿\n或許可以釣到更多的東西"
+      },
+      {
+        "name": "魚餌 <:worm:1286420915772719237>",
+        "price": 0,
+        "sellPrice": 5,
+        "rarity": "common",
+        "experience": 0,
+        "quantity": 10,
+        "description": "基礎魚餌\n沒有他將無法釣魚喔"
+      }
+    ]
+  }
+  
