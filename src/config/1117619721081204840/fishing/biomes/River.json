@@ -2,39 +2,52 @@
     "biome": "river",
     "fish": [
       {  
-        "name": "鮭魚 <:salmon:1286420124508622990>",
+        "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
         "rarity": "common",
-        "sizeRange": [30, 50],
         "price": 10,
         "experience": 1
       },
       {
-        "name": "鱈魚 <:cod:1286418503825358899> ",
-        "rarity": "uncommon",
-        "sizeRange": [40, 60],
+        "name": "魚餌 <:worm:1286420915772719237>",
+        "rarity": "common",
+        "price": 0,
+        "experience": 0
+      },
+      {
+        "name": "河鱸魚 <:perch:1286419981327929407>",
+        "rarity": "common",
         "price": 20,
+        "experience": 2
+      },
+      {
+        "name": "雀鱔 <:gar:1286419810179223613>",
+        "rarity": "uncommon",
+        "price": 25,
+        "experience": 2
+      },
+      {
+        "name": "鯰魚 <:catfish:1286418487308451881>",
+        "rarity": "uncommon",
+        "price": 25,
         "experience": 2
       },
       {
         "name": "鯉魚 <:carp:1286418428374024323>",
         "rarity": "rare",
-        "sizeRange": [50, 70],
         "price": 30,
         "experience": 3
       },
       {
         "name": "河豚 <:pufferfish:1286420045106515978>",
         "rarity": "legendary",
-        "sizeRange": [10, 15],
         "price": 50,
         "experience": 5
       },
       {
-        "name": "魚餌 <:worm:1286420915772719237>",
-        "rarity": "common",
-        "sizeRange": [0, 0],
-        "price": 0,
-        "experience": 0
+        "name": "尼斯 <:Nessie:1287094573516193802>",
+        "rarity": "mythical",
+        "price": 100,
+        "experience": 100
       }
     ]
   }

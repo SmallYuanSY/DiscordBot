@@ -1,27 +1,45 @@
 {
     "items": [
       {
-        "name": "金釣竿<:gold_fishing_rod_uncast:1286423686882132062>",
+        "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
         "price": 0,
         "sellPrice": 4000,
         "rarity": "unique",
         "experience": 0,
         "quantity": 1,
-        "description": "金制釣竿\n或許可以釣到更多的東西"
+        "description": "竹製釣竿\n 魚更喜歡這釣竿的味道"
       },
       {
-        "name": "鑽石釣竿<:diamond_fishing_rod_uncast:1286423662957695086>",
+        "name": "鐵製釣竿 <:iron_rod:1287099753296826519>",
         "price": 0,
-        "sellPrice": 89000,
+        "sellPrice": 16000,
         "rarity": "unique",
         "experience": 0,
         "quantity": 1,
-        "description": "鑽石釣竿\n或許可以釣到更多的東西"
+        "description": "鐵製釣竿\n 更加穩定的釣竿\n 釣到的魚更多"
+      },
+      {
+        "name": "金釣竿 <:gold_rod:1286423686882132062>",
+        "price": 0,
+        "sellPrice": 32000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "description": "金製釣竿\n 閃亮的釣竿\n 更容易吸引魚"
+      },
+      {
+        "name": "鑽石釣竿 <:diamond_rod:1286423662957695086>",
+        "price": 0,
+        "sellPrice": 128000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "description": "鑽石釣竿\n 釣到的魚更多\n 釣到的魚更大"
       },
       {
         "name": "魚餌 <:worm:1286420915772719237>",
-        "price": 0,
-        "sellPrice": 5,
+        "price": 5,
+        "sellPrice": 60,
         "rarity": "common",
         "experience": 0,
         "quantity": 10,

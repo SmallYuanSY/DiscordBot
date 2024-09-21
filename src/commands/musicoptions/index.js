@@ -5,7 +5,7 @@ import { client } from '@/main.js';
 
 export const command = new SlashCommandBuilder()
     .setName('musicedit')
-    .setDescription('音樂播放控制選項');
+    .setDescription('音樂播放控製選項');
 
 export const action = async (ctx) => {
     const distube = getDistubeInstance();

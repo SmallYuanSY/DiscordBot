@@ -94,7 +94,7 @@ export const action = async (oldState, newState) => {
                 .setStyle(ButtonStyle.Success);
             const userLimitButton = new ButtonBuilder()
                 .setCustomId('tempvoice_set_user_limit')
-                .setLabel('設置人數限制')
+                .setLabel('設置人數限製')
                 .setStyle(ButtonStyle.Primary);
 
             const row = new ActionRowBuilder()
@@ -167,7 +167,7 @@ client.on(Events.InteractionCreate, async interaction => {
                     await voiceChannel.permissionOverwrites.edit(interaction.guild.id, { ViewChannel: true });
                     await interaction.reply({ content: '顯示語音頻道了喔!', ephemeral: true });
                 } else if (interaction.customId === 'tempvoice_set_user_limit') {
-                    // 創建選單設置人數限制
+                    // 創建選單設置人數限製
                     if (!voiceChannel) {
                         await interaction.reply({ content: '請先加入語音頻道再進行操作', ephemeral: true });
                         return;
