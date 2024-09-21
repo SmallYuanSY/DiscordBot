@@ -1,0 +1,38 @@
+{
+  "userId": "760464688147464222",
+  "userName": "坐牢人",
+  "level": 1,
+  "money": 160,
+  "experience": 401,
+  "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
+  "currentBiome": "淡水河",
+  "backpack": [
+    {
+      "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
+      "rarity": "unique",
+      "experience": 0,
+      "quantity": 1
+    },
+    {
+      "name": "魚餌 <:worm:1286420915772719237>",
+      "rarity": "common",
+      "experience": 0,
+      "price": 5,
+      "quantity": 160
+    },
+    {
+      "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
+      "quantity": 1
+    }
+  ],
+  "biome": "River",
+  "canGoBiome": [
+    "River"
+  ],
+  "timer": 1726919733957,
+  "lastDailyReward": "2024-09-21",
+  "hexTime": "66eeb48b"
+}

@@ -1,0 +1,38 @@
+{
+  "userId": "632361138058821643",
+  "userName": "在靈堂守夜的某78上只廚@CRC你這條狗",
+  "level": 1,
+  "money": 610,
+  "experience": 37,
+  "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
+  "currentBiome": "淡水河",
+  "backpack": [
+    {
+      "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
+      "rarity": "unique",
+      "experience": 0,
+      "quantity": 1
+    },
+    {
+      "name": "魚餌 <:worm:1286420915772719237>",
+      "rarity": "common",
+      "experience": 0,
+      "price": 5,
+      "quantity": 99
+    },
+    {
+      "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
+      "rarity": "common",
+      "experience": 1,
+      "price": 10,
+      "quantity": 1
+    }
+  ],
+  "biome": "River",
+  "canGoBiome": [
+    "River"
+  ],
+  "timer": 1726921802724,
+  "lastDailyReward": "2024-09-21",
+  "hexTime": "66eebc46"
+}
