@@ -1,15 +1,14 @@
 {
-  "userId": "265341494825713665",
-  "userName": "小元",
+  "userId": "696012268357550151",
+  "userName": "無始",
   "level": 1,
-  "money": 0,
-  "experience": 2,
+  "money": 435,
+  "experience": 41,
   "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
   "currentBiome": "淡水河",
   "backpack": [
     {
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
-      "type": "rod",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1
@@ -20,22 +19,23 @@
       "rarity": "common",
       "experience": 0,
       "price": 5,
-      "quantity": 49
+      "quantity": 29
     },
     {
-      "name": "鯰魚 <:catfish:1286418487308451881>",
-      "rarity": "uncommon",
-      "experience": 2,
-      "price": 24,
-      "quantity": 1
+      "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
+      "rarity": "common",
+      "experience": 1,
+      "price": 6,
+      "quantity": 2
     }
   ],
   "biome": "River",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1726977466879,
-  "lastDailyReward": "2024-09-22",
-  "hexTime": "66ef95bd",
+  "timer": 1727778130358,
+  "lastDailyReward": "2024-10-01",
+  "hexTime": "66fbcce5",
+  "currentBait": "魚餌 <:worm:1286420915772719237>",
   "mythicalFishCaught": []
 }

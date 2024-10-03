@@ -1,0 +1,71 @@
+{
+    "biome": "ocean",
+    "fish": [
+      {  
+        "name": "赤點石斑魚 <:red_grouper:1286420077255852042>",
+        "rarity": "common",
+        "price": 6,
+        "experience": 5
+      },
+      {
+        "name": "鰻魚 <:Eel:1287821635625287700>",
+        "rarity": "common",
+        "price": 5,
+        "experience": 5
+      },
+      {
+        "name": "鱈魚 <:atlantic_cod:1286418321541042228>",
+        "rarity": "common",
+        "price": 8,
+        "experience": 5
+      },
+      {
+        "name": "水母 <:jellyfish:1286420524238377010>",
+        "rarity": "common",
+        "price": 12,
+        "experience": 4
+      },
+      {
+        "name": "鮪魚 <:tuna:1286420230205214772>",
+        "rarity": "uncommon",
+        "price": 22,
+        "experience": 8
+      },
+      {
+        "name": "粉鮭魚 <:pink_salmon:1286419970753953842>",
+        "rarity": "uncommon",
+        "price": 24,
+        "experience": 9
+      },
+      {
+        "name": "黑魚 <:blackfish:1286418359830974576>",
+        "rarity": "uncommon",
+        "price": 20,
+        "experience": 10
+      },
+      {
+        "name": "綠鱈 <:pollock:1286420025867239508>",
+        "rarity": "rare",
+        "price": 30,
+        "experience": 12
+      },
+      {
+        "name": "虹鱒魚 <:rainbow_trout:1286420062525194310>",
+        "rarity": "rare",
+        "price": 40,
+        "experience": 12
+      },
+      {
+        "name": "金魚 <:goldfish:1286419820216193116>",
+        "rarity": "legendary",
+        "price": 120,
+        "experience": 1
+      },
+      {
+        "name": "尼斯 <:Nessie:1287094573516193802>",
+        "rarity": "mythical",
+        "price": 100,
+        "experience": 100
+      }
+    ]
+  }

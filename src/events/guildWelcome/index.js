@@ -29,7 +29,7 @@ export const action = async (member) => {
         .setColor(0x00AE86);
 
       channel.send({ embeds: [embed] })
-        .then(() => console.log(`已成功發送歡迎訊息給 ${member.user.tag}`))
+        //.then(() => console.log(`已成功發送歡迎訊息給 ${member.user.tag}`))
         .catch(console.error);
     }, 1000);  // 延遲 1 秒再發送
   } catch (error) {

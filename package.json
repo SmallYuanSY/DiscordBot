@@ -13,6 +13,8 @@
     "distube": "^5.0.2",
     "dotenv": "^16.4.5",
     "fast-glob": "^3.3.2",
+    "node-cron": "^3.0.3",
+    "node-fetch": "^3.3.2",
     "pinia": "^2.1.7",
     "sodium-native": "^4.2.0",
     "vite-node": "^2.1.1",

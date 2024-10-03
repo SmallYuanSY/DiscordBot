@@ -1,6 +1,6 @@
 import { SlashCommandBuilder, ChannelType } from 'discord.js';
 import { getDistubeInstance } from '@/events/music/distube.js';
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
 
 export const command = new SlashCommandBuilder()
@@ -24,26 +24,52 @@ export const command = new SlashCommandBuilder()
         .addChannelTypes(ChannelType.GuildVoice)
     );
 
-const getSongConfig = (guildId) => {
+const getSongConfig = async (guildId) => {
     const filePath = path.resolve(__dirname, `../../config/${guildId}/song.json`);
-    if (fs.existsSync(filePath)) {
-        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    try {
+        const data = await fs.readFile(filePath, 'utf8');
+        return JSON.parse(data);
+    } catch (error) {
+        if (error.code === 'ENOENT') {
+            return null;
+        }
+        throw error;
     }
-    return null;
+};
+
+const handlePlaylist = async (distube, voiceChannel, query, textChannel) => {
+    try {
+        const result = await distube.play(voiceChannel, query, {
+            textChannel,
+            member: voiceChannel.guild.members.me,
+        });
+
+        if (Array.isArray(result)) {
+            // 如果返回的是數組，說明是播放列表
+            const totalSongs = result.length;
+            return { totalSongs, isPlaylist: true };
+        } else {
+            // 如果不是數組，說明是單曲
+            return { totalSongs: 1, isPlaylist: false };
+        }
+    } catch (error) {
+        console.error('播放音樂時發生錯誤:', error);
+        throw error;
+    }
 };
 
 export const action = async (ctx) => {
-    const client = ctx.client;
-    const query = ctx.options.getString('query');
-    const textChannel = ctx.options.getChannel('textchannel') || ctx.channel;
-    const voiceChannel = ctx.options.getChannel('voicechannel') || ctx.member.voice.channel;
+    const { options, channel, member, guild } = ctx;
+    const query = options.getString('query');
+    const textChannel = options.getChannel('textchannel') || channel;
+    const voiceChannel = options.getChannel('voicechannel') || member.voice.channel;
 
     if (!voiceChannel) {
         await ctx.reply({ content: '你必須指定一個語音頻道！', ephemeral: true });
         return;
     }
 
-    const songConfig = getSongConfig(ctx.guild.id);
+    const songConfig = await getSongConfig(guild.id);
     if (songConfig && textChannel.id !== songConfig.allowedChannelId) {
         await ctx.reply({ content: '你只能在指定的頻道中播放音樂！', ephemeral: true });
         return;
@@ -52,13 +78,17 @@ export const action = async (ctx) => {
     const distube = getDistubeInstance();
 
     try {
-        await ctx.deferReply();  // Defers the reply to prevent interaction timeout
+        await ctx.deferReply();
 
-        await distube.play(voiceChannel, query, { textChannel });
+        const { totalSongs, isPlaylist } = await handlePlaylist(distube, voiceChannel, query, textChannel);
 
-        await ctx.editReply(`正在播放: ${query}`);
+        if (isPlaylist) {
+            await ctx.editReply(`已添加播放列表：共 ${totalSongs} 首歌曲。`);
+        } else {
+            await ctx.editReply(`已添加歌曲到播放隊列。`);
+        }
     } catch (error) {
-        console.error(error);
-        await ctx.editReply('誰告訴小元我的AI壞掉了');
+        console.error('播放音樂時發生錯誤:', error);
+        await ctx.editReply('抱歉，播放音樂時出現了問題。請稍後再試。');
     }
 };

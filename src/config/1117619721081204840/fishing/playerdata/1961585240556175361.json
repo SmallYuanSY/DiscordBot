@@ -1,9 +1,9 @@
 {
-  "userId": "399128004992696320",
-  "userName": "腦殘小弟",
-  "level": 1,
-  "money": 2281,
-  "experience": 677,
+  "userId": "196158524055617536",
+  "userName": "小元",
+  "level": 2,
+  "money": 1600,
+  "experience": 0,
   "currentRod": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
   "currentBiome": "淡水河",
   "backpack": [
@@ -20,7 +20,7 @@
       "rarity": "common",
       "experience": 0,
       "price": 5,
-      "quantity": 1000
+      "quantity": 223
     },
     {
       "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
@@ -31,48 +31,48 @@
       "quantity": 1
     },
     {
+      "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
+      "rarity": "common",
+      "experience": 1,
+      "price": 10,
+      "quantity": 8
+    },
+    {
       "name": "鯉魚 <:carp:1286418428374024323>",
       "rarity": "rare",
       "experience": 3,
-      "price": 33,
+      "price": 30,
       "quantity": 10
+    },
+    {
+      "name": "雀鱔 <:gar:1286419810179223613>",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 22,
+      "quantity": 6
+    },
+    {
+      "name": "河鱸魚 <:perch:1286419981327929407>",
+      "rarity": "common",
+      "experience": 2,
+      "price": 23,
+      "quantity": 1
     },
     {
       "name": "鯰魚 <:catfish:1286418487308451881>",
       "rarity": "uncommon",
       "experience": 2,
       "price": 24,
-      "quantity": 4
-    },
-    {
-      "name": "河鱸魚 <:perch:1286419981327929407>",
-      "rarity": "common",
-      "experience": 2,
-      "price": 12,
-      "quantity": 5
-    },
-    {
-      "name": "雀鱔 <:gar:1286419810179223613>",
-      "rarity": "uncommon",
-      "experience": 2,
-      "price": 18,
-      "quantity": 3
-    },
-    {
-      "name": "河豚 <:pufferfish:1286420045106515978>",
-      "rarity": "legendary",
-      "experience": 5,
-      "price": 50,
-      "quantity": 1
+      "quantity": 2
     }
   ],
   "biome": "River",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1727746195044,
-  "lastDailyReward": "2024-10-01",
-  "hexTime": "66fb505e",
-  "mythicalFishCaught": [],
-  "currentBait": "魚餌 <:worm:1286420915772719237>"
+  "timer": 1726986719504,
+  "lastDailyReward": "2024-09-22",
+  "hexTime": "66efc0f9",
+  "messageId": "1287003197977923593",
+  "mythicalFishCaught": []
 }

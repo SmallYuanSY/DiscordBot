@@ -9,7 +9,7 @@ export const event = {
 
 export const action = async(readyClient) => {
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-	console.log('教學來自Proladon https://www.youtube.com/playlist?list=PLSCgthA1AnidGdmSea6V6N24O8mXESrf3');
+	//console.log('教學來自Proladon https://www.youtube.com/playlist?list=PLSCgthA1AnidGdmSea6V6N24O8mXESrf3');
 
     // 取得伺服器 ID 列表
     const guilds = readyClient.guilds.cache;

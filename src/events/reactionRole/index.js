@@ -49,7 +49,7 @@ export const action = async (reaction, user) => {
     // 如果按下表情符號的是機器人，則不移除反應
     if (!user.bot) {
       await member.roles.add(role);
-      console.log(`成功為 ${user.username} 賦予身份組: ${role.name}`);
+      //console.log(`成功為 ${user.username} 賦予身份組: ${role.name}`);
       await reaction.users.remove(user);  // 移除成員的反應
     }
   } catch (error) {

@@ -1,58 +1,78 @@
 {
   "userId": "178665515688919041",
   "userName": "本",
-  "level": 1,
-  "money": 1250,
-  "experience": 304,
-  "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
+  "level": 2,
+  "money": 6143,
+  "experience": 499,
+  "currentRod": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
   "currentBiome": "淡水河",
   "backpack": [
     {
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
+      "type": "rod",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1
     },
     {
-      "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
-      "rarity": "common",
-      "experience": 1,
-      "price": 10,
-      "quantity": 33
+      "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
+      "type": "rod",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
+      "quantity": 1
     },
     {
       "name": "魚餌 <:worm:1286420915772719237>",
+      "type": "bait",
       "rarity": "common",
       "experience": 0,
       "price": 5,
-      "quantity": 7
+      "quantity": 152
     },
     {
       "name": "鯉魚 <:carp:1286418428374024323>",
       "rarity": "rare",
       "experience": 3,
-      "price": 30,
-      "quantity": 28
+      "price": 33,
+      "quantity": 10
+    },
+    {
+      "name": "雀鱔 <:gar:1286419810179223613>",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 18,
+      "quantity": 15
+    },
+    {
+      "name": "鯰魚 <:catfish:1286418487308451881>",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 24,
+      "quantity": 11
     },
     {
       "name": "河鱸魚 <:perch:1286419981327929407>",
-      "rarity": "uncommon",
+      "rarity": "common",
       "experience": 2,
-      "price": 20,
-      "quantity": 17
+      "price": 12,
+      "quantity": 8
     },
     {
-      "name": "河豚 <:pufferfish:1286420045106515978>",
-      "rarity": "legendary",
-      "experience": 5,
-      "price": 50,
-      "quantity": 11
+      "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
+      "rarity": "common",
+      "experience": 1,
+      "price": 6,
+      "quantity": 6
     }
   ],
   "biome": "River",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1726833662313,
-  "lastDailyReward": "2024-09-20T10:42:56.170Z"
+  "timer": 1727404357121,
+  "lastDailyReward": "2024-09-27",
+  "hexTime": "66f618b3",
+  "mythicalFishCaught": [],
+  "currentBait": "魚餌 <:worm:1286420915772719237>"
 }

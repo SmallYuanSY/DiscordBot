@@ -2,58 +2,70 @@
   "userId": "957657491779497984",
   "userName": "林啊啊🍉",
   "level": 1,
-  "money": 355,
-  "experience": 50,
-  "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
+  "money": 2162,
+  "experience": 704,
+  "currentRod": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
   "currentBiome": "淡水河",
   "backpack": [
     {
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
+      "type": "rod",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1
     },
     {
+      "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
+      "type": "rod",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
+      "quantity": 1
+    },
+    {
       "name": "魚餌 <:worm:1286420915772719237>",
+      "type": "bait",
       "rarity": "common",
       "experience": 0,
       "price": 5,
-      "quantity": 41
+      "quantity": 26
     },
     {
-      "name": "河鱸魚 <:perch:1286419981327929407>",
+      "name": "鯰魚 <:catfish:1286418487308451881>",
       "rarity": "uncommon",
       "experience": 2,
-      "price": 20,
-      "quantity": 6
+      "price": 24,
+      "quantity": 2
+    },
+    {
+      "name": "雀鱔 <:gar:1286419810179223613>",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 18,
+      "quantity": 5
     },
     {
       "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
       "rarity": "common",
       "experience": 1,
-      "price": 10,
+      "price": 6,
       "quantity": 4
     },
     {
       "name": "鯉魚 <:carp:1286418428374024323>",
       "rarity": "rare",
       "experience": 3,
-      "price": 30,
-      "quantity": 3
-    },
-    {
-      "name": "河豚 <:pufferfish:1286420045106515978>",
-      "rarity": "legendary",
-      "experience": 5,
-      "price": 50,
-      "quantity": 3
+      "price": 33,
+      "quantity": 2
     }
   ],
   "biome": "River",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1726922609287,
-  "hexTime": "66eebf6c",
-  "lastDailyReward": "2024-09-21"
+  "timer": 1727310005112,
+  "hexTime": "66f4a88f",
+  "lastDailyReward": "2024-09-25",
+  "mythicalFishCaught": [],
+  "currentBait": "魚餌 <:worm:1286420915772719237>"
 }

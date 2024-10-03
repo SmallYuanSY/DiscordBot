@@ -26,6 +26,6 @@ export const action = async (member) => {
         .setColor(0x00AE86);
 
     channel.send({ embeds: [embed] })
-        .then(() => console.log('已成功發送再見訊息'))
+        //.then(() => console.log('已成功發送再見訊息'))
         .catch(console.error);
 };

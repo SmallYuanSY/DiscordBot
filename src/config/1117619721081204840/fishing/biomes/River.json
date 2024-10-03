@@ -4,37 +4,37 @@
       {  
         "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
         "rarity": "common",
-        "price": 10,
+        "price": 6,
         "experience": 1
       },
       {
         "name": "魚餌 <:worm:1286420915772719237>",
         "rarity": "common",
-        "price": 0,
+        "price": 5,
         "experience": 0
       },
       {
         "name": "河鱸魚 <:perch:1286419981327929407>",
         "rarity": "common",
-        "price": 20,
+        "price": 12,
         "experience": 2
       },
       {
         "name": "雀鱔 <:gar:1286419810179223613>",
         "rarity": "uncommon",
-        "price": 25,
+        "price": 18,
         "experience": 2
       },
       {
         "name": "鯰魚 <:catfish:1286418487308451881>",
         "rarity": "uncommon",
-        "price": 25,
+        "price": 24,
         "experience": 2
       },
       {
         "name": "鯉魚 <:carp:1286418428374024323>",
         "rarity": "rare",
-        "price": 30,
+        "price": 33,
         "experience": 3
       },
       {

@@ -1,0 +1,156 @@
+{
+    "rods": [
+      {
+        "name": "進階銥製釣竿 <:Advanced_Iridium_Rod:1287104442545471649>",
+        "id" : "advanced_iridium_rod",
+        "type": "rod",
+        "rarityChances": {
+          "common": 0.20,
+          "uncommon": 0.20,
+          "rare": 0.35,
+          "legendary": 0.25
+        },
+        "fishQuantityRange": [4, 8],
+        "price": 0,
+        "sellPrice": 80000000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 30,
+        "description": "進階銥製釣竿\n 釣到的魚更多\n 釣到的魚更大"
+      },
+      {
+        "name": "銥製釣竿 <:Iridium_Rod:1287104390724849845>",
+        "id" : "iridium_rod",
+        "type": "rod",
+        "rarityChances": {
+          "common": 0.25,
+          "uncommon": 0.30,
+          "rare": 0.30,
+          "legendary": 0.15
+        },
+        "fishQuantityRange": [4, 6],
+        "price": 0,
+        "sellPrice": 6400000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 25,
+        "description": "銥製釣竿\n 釣到的魚更多"
+      },
+      {
+        "name": "鑽石釣竿 <:diamond_rod:1286423662957695086>",
+        "id" : "diamond_rod",
+        "type": "rod",
+        "rarityChances": {
+          "common": 0.25,
+          "uncommon": 0.30,
+          "rare": 0.35,
+          "legendary": 0.10
+        },
+        "fishQuantityRange": [3, 6],
+        "price": 0,
+        "sellPrice": 128000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 6,
+        "description": "鑽石釣竿\n 釣到的魚更多\n 釣到的魚更大"
+      },
+      {
+        "name": "金釣竿 <:gold_rod:1286423686882132062>",
+        "id" : "gold_rod",
+        "type": "rod",
+        "rarityChances": {
+          "common": 0.40,
+          "uncommon": 0.35,
+          "rare": 0.23,
+          "legendary": 0.02
+        },
+        "fishQuantityRange": [1, 5],
+        "price": 0,
+        "sellPrice": 32000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 3,
+        "description": "金製釣竿\n 閃亮的釣竿\n 更容易吸引魚"
+      },
+      {
+        "name": "玻璃纖維釣竿 <:Fiberglass_Rod:1287104401051488268>",
+        "id" : "fiberglass_rod",
+        "type": "rod",
+        "rarityChances": {
+          "common": 0.35,
+          "uncommon": 0.30,
+          "rare": 0.30,
+          "legendary": 0.05
+        },
+        "fishQuantityRange": [1, 3],
+        "price": 0,
+        "sellPrice": 32000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 3,
+        "description": "玻璃纖維釣竿\n 小心不要插到手 \n 更容易讓好魚上鉤"
+      },
+      {
+        "name": "鐵製釣竿 <:iron_rod:1287099753296826519>",
+        "id" : "iron_rod",
+        "type": "rod",
+        "rarityChances": {
+          "common": 0.45,
+          "uncommon": 0.30,
+          "rare": 0.25,
+          "legendary": 0.00
+        },
+        "fishQuantityRange": [1, 3],
+        "price": 0,
+        "sellPrice": 16000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 2,
+        "description": "鐵製釣竿\n 更加穩定的釣竿\n 釣到的魚更多"
+      },
+      {
+        "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
+        "id" : "bamboo_rod",
+        "type": "rod",
+        "rarityChances": {
+          "common": 0.45,
+          "uncommon": 0.35,
+          "rare": 0.20,
+          "legendary": 0.00
+        },
+        "fishQuantityRange": [1, 3],
+        "price": 0,
+        "sellPrice": 4000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 1,
+        "description": "竹製釣竿\n 魚更喜歡這釣竿的味道"
+      },
+      {
+        "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
+        "id" : "fishing_rod",
+        "type": "rod",
+        "rarityChances": {
+          "common": 0.50,
+          "uncommon": 0.30,
+          "rare": 0.20,
+          "legendary": 0.00
+        },
+        "fishQuantityRange": [1, 2],
+        "price": 0,
+        "sellPrice": 4000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 100,
+        "description": "竹製釣竿\n 魚更喜歡這釣竿的味道"
+      }
+    ]
+  }

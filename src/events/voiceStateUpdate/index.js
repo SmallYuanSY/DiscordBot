@@ -76,7 +76,7 @@ export const action = async (oldState, newState) => {
             // 保存更新到 JSON 文件
             updateServerConfig(guildId, 'tempVoice.json', tempVoiceConfig);
 
-            console.log(`為 ${member.displayName} 創建了語音頻道: ${userVoiceChannel.name} 和文字頻道: ${userTextChannel.name}`);
+            //console.log(`為 ${member.displayName} 創建了語音頻道: ${userVoiceChannel.name} 和文字頻道: ${userTextChannel.name}`);
             // Add a short delay to ensure the channel is created
             await new Promise(resolve => setTimeout(resolve, 100));
 
@@ -130,7 +130,7 @@ export const checkAndDeleteEmptyChannels = async (guild) => {
                 // 更新配置文件
                 updateServerConfig(guild.id, 'tempVoice.json', config);
 
-                console.log(`已刪除語音和文字頻道: ${voiceChannel.name}`);
+                //console.log(`已刪除語音和文字頻道: ${voiceChannel.name}`);
             } catch (error) {
                 console.error('刪除臨時頻道失敗:', error);
             }

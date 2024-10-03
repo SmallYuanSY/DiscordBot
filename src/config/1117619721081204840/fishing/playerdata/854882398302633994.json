@@ -1,41 +1,31 @@
 {
-  "userId": "265341494825713665",
-  "userName": "小元",
+  "userId": "854882398302633994",
+  "userName": "幻想污染",
   "level": 1,
-  "money": 0,
-  "experience": 2,
+  "money": 100,
+  "experience": 0,
   "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
   "currentBiome": "淡水河",
   "backpack": [
     {
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
-      "type": "rod",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1
     },
     {
       "name": "魚餌 <:worm:1286420915772719237>",
-      "type": "bait",
       "rarity": "common",
       "experience": 0,
       "price": 5,
-      "quantity": 49
-    },
-    {
-      "name": "鯰魚 <:catfish:1286418487308451881>",
-      "rarity": "uncommon",
-      "experience": 2,
-      "price": 24,
-      "quantity": 1
+      "quantity": 10
     }
   ],
   "biome": "River",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1726977466879,
-  "lastDailyReward": "2024-09-22",
-  "hexTime": "66ef95bd",
-  "mythicalFishCaught": []
+  "timer": 0,
+  "lastDailyReward": "2024-09-27",
+  "hexTime": "66f6916a"
 }

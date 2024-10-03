@@ -1,0 +1,40 @@
+{
+    "baits": [
+      {
+        "name": "魚餌 <:worm:1286420915772719237>",
+        "id": "default_bait",
+        "type": "bait",
+        "description": "基礎魚餌\n沒有他將無法釣魚喔",
+        "rarityModifier": {
+          "common": 0,
+          "uncommon": 0,
+          "rare": 0,
+          "legendary": 0
+        },
+        "price": 5,
+        "sellPrice": 60,
+        "rarity": "common",
+        "experience": 0,
+        "quantity": 10,
+        "requiredLevel": 1
+      },
+      {
+        "name": "高級餌 <:worm:1286420915772719237>",
+        "id": "advanced_bait",
+        "type": "bait",
+        "description": "增加釣到稀有和傳奇魚的機率",
+        "rarityModifier": {
+          "common": -0.1,
+          "uncommon": -0.1,
+          "rare": 0.15,
+          "legendary": 0.05
+        },
+        "price": 10,
+        "sellPrice": 120,
+        "rarity": "uncommon",
+        "experience": 0,
+        "quantity": 5,
+        "requiredLevel": 3
+      }
+    ]
+  }

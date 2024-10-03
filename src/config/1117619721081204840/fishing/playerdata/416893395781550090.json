@@ -9,12 +9,14 @@
   "backpack": [
     {
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
+      "type": "rod",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1
     },
     {
       "name": "魚餌 <:worm:1286420915772719237>",
+      "type": "bait",
       "rarity": "common",
       "experience": 0,
       "price": 5,

@@ -1,16 +1,57 @@
 {
   "userId": "475314328476712962",
   "userName": "夙肅溯宿",
-  "level": 1,
-  "money": 300,
-  "experience": 36,
-  "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
-  "currentBiome": "淡水河",
+  "level": 4,
+  "money": 8315,
+  "experience": 15298,
+  "currentRod": "金釣竿 <:gold_rod:1286423686882132062>",
+  "currentBiome": "寶貝湖",
   "backpack": [
     {
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
+      "type": "rod",
       "rarity": "unique",
       "experience": 0,
+      "quantity": 1
+    },
+    {
+      "name": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
+      "type": "rod",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
+      "quantity": 1
+    },
+    {
+      "name": "木筏 <:Boat:1287270950618005536>",
+      "type": "boat",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
+      "quantity": 1
+    },
+    {
+      "name": "鐵製釣竿 <:iron_rod:1287099753296826519>",
+      "type": "rod",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
+      "quantity": 1
+    },
+    {
+      "name": "金釣竿 <:gold_rod:1286423686882132062>",
+      "type": "rod",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
+      "quantity": 1
+    },
+    {
+      "name": "玻璃纖維釣竿 <:Fiberglass_Rod:1287104401051488268>",
+      "type": "rod",
+      "rarity": "unique",
+      "experience": 0,
+      "price": 0,
       "quantity": 1
     },
     {
@@ -18,34 +59,80 @@
       "rarity": "common",
       "experience": 0,
       "price": 5,
-      "quantity": 0
+      "quantity": 10
     },
     {
-      "name": "河鱸魚 <:perch:1286419981327929407>",
+      "name": "高級餌 <:worm:1286420915772719237>",
+      "type": "bait",
       "rarity": "uncommon",
-      "experience": 2,
-      "price": 20,
-      "quantity": 3
+      "experience": 0,
+      "price": 10,
+      "quantity": 19
     },
     {
-      "name": "河豚 <:pufferfish:1286420045106515978>",
+      "name": "美納斯 <:Milotic:1287312502035578880>",
+      "rarity": "rare",
+      "experience": 10,
+      "price": 32,
+      "quantity": 10
+    },
+    {
+      "name": "閃光鲤鱼王 <:ShinyMagikarp:1287312494192230442>",
       "rarity": "legendary",
-      "experience": 5,
+      "experience": 20,
       "price": 50,
+      "quantity": 1
+    },
+    {
+      "name": "龍蝦小兵 <:Corphish:1287312567299215400>",
+      "rarity": "uncommon",
+      "experience": 6,
+      "price": 22,
+      "quantity": 5
+    },
+    {
+      "name": "鲤鱼王 <:Magikarp:1287312518993412227>",
+      "rarity": "common",
+      "experience": 4,
+      "price": 3,
       "quantity": 4
     },
     {
-      "name": "鯉魚 <:carp:1286418428374024323>",
-      "rarity": "rare",
-      "experience": 3,
-      "price": 30,
+      "name": "瑪納霏 <:Manaphy:1287312510168465418>",
+      "rarity": "legendary",
+      "experience": 18,
+      "price": 70,
+      "quantity": 1
+    },
+    {
+      "name": "烏波 <:Wooper:1287312485249974305>",
+      "rarity": "uncommon",
+      "experience": 6,
+      "price": 27,
       "quantity": 3
+    },
+    {
+      "name": "醜醜鱼 <:Feebas:1287312560554643457>",
+      "rarity": "common",
+      "experience": 4,
+      "price": 8,
+      "quantity": 5
+    },
+    {
+      "name": "暴鯉龍 <:Gyarados:1287312540015132683>",
+      "rarity": "rare",
+      "experience": 10,
+      "price": 28,
+      "quantity": 2
     }
   ],
-  "biome": "River",
+  "biome": "Pokemon",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1726847699394,
-  "lastDailyReward": "2024-09-20T15:53:14.736Z"
+  "timer": 1727894260467,
+  "lastDailyReward": "2024-10-02",
+  "mythicalFishCaught": [],
+  "hexTime": "66fd92e9",
+  "currentBait": "高級餌 <:worm:1286420915772719237>"
 }

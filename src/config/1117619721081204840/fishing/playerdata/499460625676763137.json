@@ -1,9 +1,9 @@
 {
-  "userId": "951486587261296740",
-  "userName": "靈藥",
+  "userId": "499460625676763137",
+  "userName": "頁川",
   "level": 1,
-  "money": 1773,
-  "experience": 177,
+  "money": 3585,
+  "experience": 415,
   "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
   "currentBiome": "淡水河",
   "backpack": [
@@ -20,28 +20,28 @@
       "rarity": "common",
       "experience": 0,
       "price": 5,
-      "quantity": 7
+      "quantity": 9
+    },
+    {
+      "name": "雀鱔 <:gar:1286419810179223613>",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 18,
+      "quantity": 2
     },
     {
       "name": "鯉魚 <:carp:1286418428374024323>",
       "rarity": "rare",
       "experience": 3,
       "price": 33,
-      "quantity": 4
+      "quantity": 2
     },
     {
       "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
       "rarity": "common",
       "experience": 1,
-      "price": 18,
+      "price": 6,
       "quantity": 2
-    },
-    {
-      "name": "雀鱔 <:gar:1286419810179223613>",
-      "rarity": "uncommon",
-      "experience": 2,
-      "price": 22,
-      "quantity": 5
     },
     {
       "name": "鯰魚 <:catfish:1286418487308451881>",
@@ -49,21 +49,15 @@
       "experience": 2,
       "price": 24,
       "quantity": 2
-    },
-    {
-      "name": "河豚 <:pufferfish:1286420045106515978>",
-      "rarity": "legendary",
-      "experience": 5,
-      "price": 50,
-      "quantity": 3
     }
   ],
   "biome": "River",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1726990088441,
-  "lastDailyReward": "2024-09-20T11:27:41.664Z",
-  "hexTime": "66efc709",
-  "mythicalFishCaught": []
+  "timer": 1727512202814,
+  "lastDailyReward": "2024-09-28",
+  "mythicalFishCaught": [],
+  "currentBait": "魚餌 <:worm:1286420915772719237>",
+  "hexTime": "66fcd586"
 }

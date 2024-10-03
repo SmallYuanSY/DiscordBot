@@ -1,0 +1,28 @@
+{
+    "boat": [
+      {
+        "name": "木筏 <:Boat:1287270950618005536>",
+        "id": "wood_boat",
+        "type": "boat",
+        "price": 0,
+        "sellPrice": 10000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 2,
+        "description": "木筏\n 去其他地區的必備工具"
+      },
+      {
+        "name": "小船 <:boat_adv:1287831014785421393>",
+        "id": "boat",
+        "type": "boat",
+        "price": 0,
+        "sellPrice": 64000,
+        "rarity": "unique",
+        "experience": 0,
+        "quantity": 1,
+        "requiredLevel": 4,
+        "description": "小船\n 去其他地區的必備工具"
+      }
+    ]
+  }
