@@ -87,14 +87,34 @@ export const getFishingResult = (playerConfig, guildId, consumeBait = true) => {
         // 檢查是否釣到 mythical 魚
         const mythicalRandom = Math.random();
         if (mythicalRandom <= mythicalChanceInLegendary) {
-            const availableMythicalFish = biomeData.fish.filter(fish => fish.rarity === 'mythical');
-            const mythicalFishData = availableMythicalFish[Math.floor(Math.random() * availableMythicalFish.length)];
-
-            // 檢查玩家是否已經釣到該 mythical 魚
-            if (!playerConfig.mythicalFishCaught.includes(mythicalFishData.name)) {
-                fishRarity = "mythical"; // 設定為 mythical 魚
-                playerConfig.mythicalFishCaught.push(mythicalFishData.name); // 更新記錄
+            const availableMythicalFish = biomeData.fish.filter(fish => 
+                fish.rarity === 'mythical' && !playerConfig.mythicalFishCaught.includes(fish.name)
+            );
+            
+            if (availableMythicalFish.length > 0) {
+                const mythicalFishData = availableMythicalFish[Math.floor(Math.random() * availableMythicalFish.length)];
+                playerConfig.mythicalFishCaught.push(mythicalFishData.name);
+                return { fishData: mythicalFishData, fishQuantity: 1 };
+            } else {
+                // 如果所有傳說魚都已被釣起，降級為傳奇魚
+                fishRarity = "legendary";
             }
+        }
+    }
+
+    // 修改這部分
+    if (fishRarity === "mythical") {
+        const availableMythicalFish = biomeData.fish.filter(fish => 
+            fish.rarity === 'mythical' && !playerConfig.mythicalFishCaught.includes(fish.name)
+        );
+        
+        if (availableMythicalFish.length > 0) {
+            const mythicalFishData = availableMythicalFish[Math.floor(Math.random() * availableMythicalFish.length)];
+            playerConfig.mythicalFishCaught.push(mythicalFishData.name);
+            return { fishData: mythicalFishData, fishQuantity: 1 };
+        } else {
+            // 如果所有傳說魚都已被釣起，降級為傳奇魚
+            fishRarity = "legendary";
         }
     }
 
@@ -113,8 +133,9 @@ export const getFishingResult = (playerConfig, guildId, consumeBait = true) => {
         if (selectedItem.type === 'pat') {
             return { petData: selectedItem, isPet: true };
         } else {
-            // 隨機確定釣到的魚數量
-            const fishQuantity = Math.floor(Math.random() * (fishQuantityRange[1] - fishQuantityRange[0] + 1)) + fishQuantityRange[0];
+            // 隨機確定釣到的魚數量，但傳說魚只能釣到一隻
+            const fishQuantity = selectedItem.rarity === 'mythical' ? 1 : 
+                Math.floor(Math.random() * (fishQuantityRange[1] - fishQuantityRange[0] + 1)) + fishQuantityRange[0];
             return { fishData: selectedItem, fishQuantity };
         }
     } else {
@@ -122,20 +143,12 @@ export const getFishingResult = (playerConfig, guildId, consumeBait = true) => {
         const availableFish = biomeData.fish.filter(fish => fish.rarity === fishRarity);
         const fishData = availableFish[Math.floor(Math.random() * availableFish.length)];
 
-        // 隨機確定釣到的魚數量
-        const fishQuantity = Math.floor(Math.random() * (fishQuantityRange[1] - fishQuantityRange[0] + 1)) + fishQuantityRange[0];
+        // 隨機確定釣到的魚數量，但傳說魚只能釣到一隻
+        const fishQuantity = fishData.rarity === 'mythical' ? 1 : 
+            Math.floor(Math.random() * (fishQuantityRange[1] - fishQuantityRange[0] + 1)) + fishQuantityRange[0];
 
         return { fishData, fishQuantity };
     }
-
-    // 根據稀有度選擇魚
-    const availableFish = biomeData.fish.filter(fish => fish.rarity === fishRarity);
-    const fishData = availableFish[Math.floor(Math.random() * availableFish.length)];
-
-    // 隨機確定釣到的魚數量
-    const fishQuantity = Math.floor(Math.random() * (fishQuantityRange[1] - fishQuantityRange[0] + 1)) + fishQuantityRange[0];
-
-    return { fishData, fishQuantity };
 };
 
 // 新增寵物釣魚邏輯
@@ -205,6 +218,7 @@ export const processPetFishingResult = (playerConfig, guildId) => {
             } else {
                 playerConfig.backpack.push({
                     name: fishData.name,
+                    type: fishData.type,
                     rarity: fishData.rarity,
                     experience: fishData.experience,
                     price: fishData.price,

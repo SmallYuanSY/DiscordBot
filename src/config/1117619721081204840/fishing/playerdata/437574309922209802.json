@@ -1,0 +1,67 @@
+{
+  "userId": "437574309922209802",
+  "userName": "Magikarp",
+  "level": 1,
+  "money": 335,
+  "experience": 55,
+  "currentRod": "初級釣竿 <:fishing_rod:1286423711385129041>",
+  "currentBiome": "淡水河",
+  "backpack": [
+    {
+      "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
+      "rarity": "unique",
+      "experience": 0,
+      "quantity": 1
+    },
+    {
+      "id": "default_bait",
+      "name": "魚餌 <:worm:1286420915772719237>",
+      "type": "bait",
+      "rarity": "common",
+      "experience": 0,
+      "price": 5,
+      "quantity": 10
+    },
+    {
+      "name": "雀鱔 <:gar:1286419810179223613>",
+      "type": "fish",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 18,
+      "quantity": 5
+    },
+    {
+      "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
+      "type": "fish",
+      "rarity": "common",
+      "experience": 1,
+      "price": 6,
+      "quantity": 7
+    },
+    {
+      "name": "鯉魚 <:carp:1286418428374024323>",
+      "type": "fish",
+      "rarity": "rare",
+      "experience": 3,
+      "price": 33,
+      "quantity": 5
+    },
+    {
+      "name": "鯰魚 <:catfish:1286418487308451881>",
+      "type": "fish",
+      "rarity": "uncommon",
+      "experience": 2,
+      "price": 24,
+      "quantity": 2
+    }
+  ],
+  "biome": "River",
+  "canGoBiome": [
+    "River"
+  ],
+  "timer": 1728118224748,
+  "lastDailyReward": "2024-10-05",
+  "hexTime": "6700fca4",
+  "currentBait": "魚餌 <:worm:1286420915772719237>",
+  "mythicalFishCaught": []
+}

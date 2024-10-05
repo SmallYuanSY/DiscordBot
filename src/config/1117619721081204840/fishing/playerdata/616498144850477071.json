@@ -2,13 +2,13 @@
   "userId": "616498144850477071",
   "userName": "Est",
   "level": 6,
-  "money": 65220,
-  "experience": 59912,
+  "money": 225164,
+  "experience": 60610,
   "currentRod": "銥製釣竿 <:Iridium_Rod:1287104390724849845>",
   "currentBiome": "海洋",
   "backpack": [
     {
-      "id" : "fishing_rod",
+      "id": "fishing_rod",
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
       "type": "rod",
       "rarity": "unique",
@@ -81,7 +81,7 @@
       "rarity": "mythical",
       "experience": 100,
       "price": 100,
-      "quantity": 5
+      "quantity": 1
     },
     {
       "name": "瑪納霏 <:Manaphy:1287312510168465418>",
@@ -101,12 +101,13 @@
       "quantity": 1
     },
     {
+      "id": "advanced_bait",
       "name": "高級餌 <:worm:1286420915772719237>",
       "type": "bait",
       "rarity": "uncommon",
       "experience": 0,
       "price": 10,
-      "quantity": 2067
+      "quantity": 12052
     },
     {
       "id": "diamond_rod",
@@ -118,52 +119,19 @@
       "quantity": 2
     },
     {
-      "name": "金魚 <:goldfish:1286419820216193116>",
-      "type": "fish",
-      "rarity": "legendary",
-      "experience": 1,
-      "price": 120,
-      "quantity": 1477
+      "name": "尼斯 <:Nessie:1287094573516193802>",
+      "type": "pat",
+      "rarity": "mythical",
+      "experience": 100,
+      "price": 100,
+      "quantity": 1
     },
     {
-      "name": "虹鱒魚 <:rainbow_trout:1286420062525194310>",
-      "type": "fish",
-      "rarity": "rare",
-      "experience": 12,
-      "price": 40,
-      "quantity": 1712
-    },
-    {
-      "name": "鮪魚 <:tuna:1286420230205214772>",
-      "type": "fish",
-      "rarity": "uncommon",
-      "experience": 8,
-      "price": 22,
-      "quantity": 472
-    },
-    {
-      "name": "粉鮭魚 <:pink_salmon:1286419970753953842>",
-      "type": "fish",
-      "rarity": "uncommon",
-      "experience": 9,
-      "price": 24,
-      "quantity": 530
-    },
-    {
-      "name": "黑魚 <:blackfish:1286418359830974576>",
-      "type": "fish",
-      "rarity": "uncommon",
-      "experience": 10,
-      "price": 20,
-      "quantity": 516
-    },
-    {
-      "name": "鱈魚 <:atlantic_cod:1286418321541042228>",
-      "type": "fish",
+      "id": "blacksugar",
+      "name": "黑糖",
+      "type": "pet",
       "rarity": "common",
-      "experience": 5,
-      "price": 8,
-      "quantity": 195
+      "quantity": 4
     },
     {
       "name": "綠鱈 <:pollock:1286420025867239508>",
@@ -171,23 +139,15 @@
       "rarity": "rare",
       "experience": 12,
       "price": 30,
-      "quantity": 1514
+      "quantity": 12
     },
     {
-      "name": "尼斯 <:Nessie:1287094573516193802>",
-      "type": "pat",
-      "rarity": "mythical",
-      "experience": 100,
-      "price": 100,
-      "quantity": 5
-    },
-    {
-      "name": "鰻魚 <:Eel:1287821635625287700>",
+      "name": "鮪魚 <:tuna:1286420230205214772>",
       "type": "fish",
-      "rarity": "common",
-      "experience": 5,
-      "price": 5,
-      "quantity": 190
+      "rarity": "uncommon",
+      "experience": 8,
+      "price": 22,
+      "quantity": 12
     },
     {
       "name": "水母 <:jellyfish:1286420524238377010>",
@@ -195,28 +155,29 @@
       "rarity": "common",
       "experience": 4,
       "price": 12,
-      "quantity": 153
+      "quantity": 5
     },
     {
-      "name": "赤點石斑魚 <:red_grouper:1286420077255852042>",
+      "name": "金魚 <:goldfish:1286419820216193116>",
       "type": "fish",
-      "rarity": "common",
-      "experience": 5,
-      "price": 6,
-      "quantity": 182
+      "rarity": "legendary",
+      "experience": 1,
+      "price": 120,
+      "quantity": 4
     }
   ],
   "biome": "ocean",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1728070847910,
+  "timer": 1728130259955,
   "lastDailyReward": "2024-10-03",
-  "hexTime": "6700417a",
+  "hexTime": "67012a97",
   "mythicalFishCaught": [
     "安安家的沙漠蜻蜓 <:Flygon:1287312551905853520>",
     "蓋歐卡 <:Kyogre:1287312530724880444>",
     "尼斯 <:Nessie:1287094573516193802>"
   ],
-  "currentBait": "高級餌 <:worm:1286420915772719237>"
+  "currentBait": "高級餌 <:worm:1286420915772719237>",
+  "currentPet": "blacksugar"
 }

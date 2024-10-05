@@ -2,8 +2,8 @@
   "userId": "196158524055617536",
   "userName": "小元",
   "level": 2,
-  "money": 6156,
-  "experience": 3432,
+  "money": 5036,
+  "experience": 3486,
   "currentRod": "竹製釣竿 <:Bamboo_Rod:1287104410996052030>",
   "currentBiome": "寶貝湖",
   "backpack": [
@@ -34,64 +34,36 @@
       "quantity": 1
     },
     {
-      "name": "鲤鱼王 <:Magikarp:1287312518993412227>",
-      "rarity": "common",
-      "experience": 4,
-      "price": 3,
-      "quantity": 14
-    },
-    {
-      "name": "醜醜鱼 <:Feebas:1287312560554643457>",
-      "rarity": "common",
-      "experience": 4,
-      "price": 8,
-      "quantity": 14
-    },
-    {
-      "name": "美納斯 <:Milotic:1287312502035578880>",
-      "rarity": "rare",
-      "experience": 10,
-      "price": 32,
-      "quantity": 2
-    },
-    {
-      "name": "烏波 <:Wooper:1287312485249974305>",
-      "rarity": "uncommon",
-      "experience": 6,
-      "price": 27,
-      "quantity": 10
-    },
-    {
-      "name": "龍蝦小兵 <:Corphish:1287312567299215400>",
-      "rarity": "uncommon",
-      "experience": 6,
-      "price": 22,
-      "quantity": 4
-    },
-    {
-      "name": "暴鯉龍 <:Gyarados:1287312540015132683>",
-      "rarity": "rare",
-      "experience": 10,
-      "price": 28,
-      "quantity": 1
-    },
-    {
       "id": "default_bait",
       "name": "魚餌 <:worm:1286420915772719237>",
       "type": "bait",
       "rarity": "common",
       "experience": 0,
       "price": 5,
-      "quantity": 10
+      "quantity": 308
+    },
+    {
+      "name": "鲤鱼王 <:Magikarp:1287312518993412227>",
+      "rarity": "common",
+      "experience": 4,
+      "price": 3,
+      "quantity": 3
+    },
+    {
+      "name": "龍蝦小兵 <:Corphish:1287312567299215400>",
+      "rarity": "uncommon",
+      "experience": 6,
+      "price": 22,
+      "quantity": 3
     }
   ],
   "biome": "Pokemon",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1728099994393,
+  "timer": 1728130553574,
   "lastDailyReward": "2024-10-05",
-  "hexTime": "6700b6f3",
+  "hexTime": "67012dd9",
   "messageId": "1287003197977923593",
   "mythicalFishCaught": [],
   "currentBait": "魚餌 <:worm:1286420915772719237>"

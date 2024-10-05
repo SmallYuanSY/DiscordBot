@@ -2,13 +2,13 @@
   "userId": "760464688147464222",
   "userName": "坐牢人",
   "level": 4,
-  "money": 50341,
+  "money": 37541,
   "experience": 11648,
   "currentRod": "金釣竿 <:gold_rod:1286423686882132062>",
   "currentBiome": "寶貝湖",
   "backpack": [
     {
-      "id" : "fishing_rod",
+      "id": "fishing_rod",
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
       "type": "rod",
       "rarity": "unique",
@@ -130,6 +130,13 @@
       "experience": 0,
       "price": 5,
       "quantity": 10
+    },
+    {
+      "id": "blacksugar",
+      "name": "黑糖",
+      "type": "pet",
+      "rarity": "common",
+      "quantity": 1
     }
   ],
   "biome": "Pokemon",
@@ -138,7 +145,8 @@
   ],
   "timer": 1727408621400,
   "lastDailyReward": "2024-09-27",
-  "hexTime": "66f62993",
+  "hexTime": "670127b2",
   "mythicalFishCaught": [],
-  "currentBait": "高級餌 <:worm:1286420915772719237>"
+  "currentBait": "高級餌 <:worm:1286420915772719237>",
+  "currentPet": "blacksugar"
 }

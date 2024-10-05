@@ -24,14 +24,12 @@
       "quantity": 1
     },
     {
-      "id": "nessie",
       "name": "尼斯 <:Nessie:1287094573516193802>",
       "type": "pat",
       "rarity": "mythical",
-      "time": 24,
-      "requiredLevel": 1,
+      "experience": 100,
       "price": 100,
-      "experience": 100
+      "quantity": 1
     },
     {
       "id": "wood_boat",
@@ -79,6 +77,7 @@
     },
     {
       "name": "烏波 <:Wooper:1287312485249974305>",
+      "type": "fish",
       "rarity": "uncommon",
       "experience": 6,
       "price": 27,
@@ -86,6 +85,7 @@
     },
     {
       "name": "龍蝦小兵 <:Corphish:1287312567299215400>",
+      "type": "fish",
       "rarity": "uncommon",
       "experience": 6,
       "price": 22,
@@ -93,6 +93,7 @@
     },
     {
       "name": "美納斯 <:Milotic:1287312502035578880>",
+      "type": "fish",
       "rarity": "rare",
       "experience": 10,
       "price": 32,

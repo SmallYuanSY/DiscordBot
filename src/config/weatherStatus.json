@@ -1,7 +1,7 @@
 {
-  "lastUpdate": "2024-10-05T03:00:01.322Z",
+  "lastUpdate": "2024-10-05T12:00:11.806Z",
   "location": "Taipei",
   "condition": "Partly cloudy",
-  "icon": "https://cdn.weatherapi.com/weather/64x64/day/116.png",
-  "temperature": 28.2
+  "icon": "https://cdn.weatherapi.com/weather/64x64/night/116.png",
+  "temperature": 27.3
 }
