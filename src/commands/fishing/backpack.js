@@ -177,7 +177,7 @@ export function handleToolItems(interaction, playerConfig, userId, hexTime) {
 export function handleBaitItems(interaction, playerConfig, userId, hexTime) {
     const baitItems = playerConfig.backpack.filter(item => item.type === 'bait');
     let baitContent = baitItems
-        .map(item => `${item.name} x${item.quantity}, 稀有度: ${item.rarity}, 經驗: ${item.experience} xp`)
+        .map(item => `${item.name} x${item.quantity}, 稀有度: ${item.rarity}, 經驗: ${item.experience || 0} xp`)
         .join('\n');
 
     let embed = {
@@ -189,9 +189,9 @@ export function handleBaitItems(interaction, playerConfig, userId, hexTime) {
     let currentRow = new ActionRowBuilder();
     let buttonCount = 0;
 
-    baitItems.forEach(bait => {
+    baitItems.forEach((bait, index) => {
         const button = new ButtonBuilder()
-            .setCustomId(`backpack-${userId}-${hexTime}-select-bait-${bait.name}`)
+            .setCustomId(`backpack-${userId}-${hexTime}-select-bait-${index}`) // 使用索引而不是名稱
             .setLabel(removeEmoji(bait.name))
             .setStyle('Primary');
 
@@ -215,7 +215,7 @@ export function handleBaitItems(interaction, playerConfig, userId, hexTime) {
     }
 
     const backpackreturnButton = new ButtonBuilder()
-        .setCustomId(`backpack-${userId}-${hexTime}`)
+        .setCustomId(`backpack-${userId}-${hexTime}-return`)
         .setLabel('返回')
         .setStyle('Secondary');
 
@@ -268,14 +268,20 @@ export function handleRodSelection(interaction, playerConfig, userId, hexTime, d
 
 // 處理魚餌選擇
 export function handleBaitSelection(interaction, playerConfig, userId, hexTime, dirPath, generatePlayerInfo, weather) {
-    const selectedBait = interaction.customId.split(`backpack-${userId}-${hexTime}-select-bait-`)[1];
+    const selectedBaitIndex = parseInt(interaction.customId.split(`backpack-${userId}-${hexTime}-select-bait-`)[1]);
+    const baitItems = playerConfig.backpack.filter(item => item.type === 'bait');
+    const selectedBait = baitItems[selectedBaitIndex];
 
-    playerConfig.currentBait = selectedBait;
+    if (!selectedBait) {
+        throw new Error('無法找到選擇的魚餌');
+    }
+
+    playerConfig.currentBait = selectedBait.name;
     fs.writeFileSync(dirPath, JSON.stringify(playerConfig, null, 2));
 
     let embed = {
         title: '<:worm:1286420915772719237> 魚餌切換成功 <:worm:1286420915772719237>',
-        description: generatePlayerInfo(playerConfig, weather, `🎣<@${playerConfig.userId}> 你已經切換到 ${selectedBait}！`)
+        description: generatePlayerInfo(playerConfig, weather, `🎣<@${playerConfig.userId}> 你已經切換到 ${selectedBait.name}！`)
     };
 
     return { embed };

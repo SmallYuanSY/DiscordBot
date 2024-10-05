@@ -3,60 +3,70 @@
     "fish": [
       {  
         "name": "鲤鱼王 <:Magikarp:1287312518993412227>",
+        "type": "fish",
         "rarity": "common",
         "price": 3,
         "experience": 4
       },
       {
         "name": "醜醜鱼 <:Feebas:1287312560554643457>",
+        "type": "fish",
         "rarity": "common",
         "price": 8,
         "experience": 4
       },
       {
         "name": "烏波 <:Wooper:1287312485249974305>",
+        "type": "fish",
         "rarity": "uncommon",
         "price": 27,
         "experience": 6
       },
       {
         "name": "龍蝦小兵 <:Corphish:1287312567299215400>",
+        "type": "fish",
         "rarity": "uncommon",
         "price": 22,
         "experience": 6
       },
       {
         "name": "暴鯉龍 <:Gyarados:1287312540015132683>",
+        "type": "fish",
         "rarity": "rare",
         "price": 28,
         "experience": 10
       },
       {
         "name": "美納斯 <:Milotic:1287312502035578880>",
+        "type": "fish",
         "rarity": "rare",
         "price": 32,
         "experience": 10
       },
       {
         "name": "閃光鲤鱼王 <:ShinyMagikarp:1287312494192230442>",
+        "type": "fish",
         "rarity": "legendary",
         "price": 50,
         "experience": 20
       },
       {
         "name": "瑪納霏 <:Manaphy:1287312510168465418>",
+        "type": "fish",
         "rarity": "legendary",
         "price": 70,
         "experience": 18
       },
       {
         "name": "蓋歐卡 <:Kyogre:1287312530724880444>",
+        "type": "fish",
         "rarity": "mythical",
         "price": 100,
         "experience": 100
       },
       {
         "name": "安安家的沙漠蜻蜓 <:Flygon:1287312551905853520>",
+        "type": "pat",
         "rarity": "mythical",
         "price": 100,
         "experience": 100

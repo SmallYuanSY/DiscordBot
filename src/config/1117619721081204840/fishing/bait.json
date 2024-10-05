@@ -1,8 +1,8 @@
 {
     "baits": [
       {
-        "name": "魚餌 <:worm:1286420915772719237>",
         "id": "default_bait",
+        "name": "魚餌 <:worm:1286420915772719237>",
         "type": "bait",
         "description": "基礎魚餌\n沒有他將無法釣魚喔",
         "rarityModifier": {
@@ -12,7 +12,7 @@
           "legendary": 0
         },
         "price": 5,
-        "sellPrice": 60,
+        "sellPrice": 6,
         "rarity": "common",
         "experience": 0,
         "quantity": 10,
@@ -30,7 +30,7 @@
           "legendary": 0.05
         },
         "price": 10,
-        "sellPrice": 120,
+        "sellPrice": 12,
         "rarity": "uncommon",
         "experience": 0,
         "quantity": 5,

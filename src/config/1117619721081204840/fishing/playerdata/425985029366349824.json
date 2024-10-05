@@ -8,6 +8,7 @@
   "currentBiome": "寶貝湖",
   "backpack": [
     {
+      "id" : "fishing_rod",
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
       "type": "rod",
       "rarity": "unique",
@@ -23,13 +24,17 @@
       "quantity": 1
     },
     {
+      "id": "nessie",
       "name": "尼斯 <:Nessie:1287094573516193802>",
+      "type": "pat",
       "rarity": "mythical",
-      "experience": 100,
+      "time": 24,
+      "requiredLevel": 1,
       "price": 100,
-      "quantity": 3
+      "experience": 100
     },
     {
+      "id": "wood_boat",
       "name": "木筏 <:Boat:1287270950618005536>",
       "type": "boat",
       "rarity": "unique",
@@ -38,6 +43,7 @@
       "quantity": 1
     },
     {
+      "id": "iron_rod",
       "name": "鐵製釣竿 <:iron_rod:1287099753296826519>",
       "type": "rod",
       "rarity": "unique",
@@ -46,6 +52,7 @@
       "quantity": 1
     },
     {
+      "id": "gold_rod",
       "name": "金釣竿 <:gold_rod:1286423686882132062>",
       "type": "rod",
       "rarity": "unique",
@@ -62,6 +69,7 @@
       "quantity": 313
     },
     {
+      "id": "fiberglass_rod",
       "name": "玻璃纖維釣竿 <:Fiberglass_Rod:1287104401051488268>",
       "type": "rod",
       "rarity": "unique",

@@ -3,7 +3,8 @@
       "money": 100,
       "items": [
         {
-            "name": "魚餌 <:worm:1286420915772719237>",
+            "id": "default_bait",
+      "name": "魚餌 <:worm:1286420915772719237>",
             "quantity": 10,
             "experience": 0,
             "price": 5,
@@ -28,7 +29,8 @@
       "money": 100,
       "items": [
         {
-            "name": "魚餌 <:worm:1286420915772719237>",
+            "id": "default_bait",
+      "name": "魚餌 <:worm:1286420915772719237>",
             "quantity": 10,
             "experience": 0,
             "price": 5,
@@ -41,7 +43,8 @@
       "money": 300,
       "items": [
         {
-            "name": "魚餌 <:worm:1286420915772719237>",
+            "id": "default_bait",
+      "name": "魚餌 <:worm:1286420915772719237>",
             "quantity": 10,
             "experience": 0,
             "price": 5,

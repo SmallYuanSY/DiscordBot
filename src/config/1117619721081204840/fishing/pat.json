@@ -1,0 +1,22 @@
+{
+    "pat": [
+        {
+            "id": "nessie",
+            "name": "尼斯 <:Nessie:1287094573516193802>",
+            "rarity": "mythical",
+            "time": 24,
+            "requiredLevel": 100,
+            "price": 100,
+            "emoji": "<:Nessie:1287094573516193802>"
+        },
+        {
+            "id": "blacksugar",
+            "name": "黑糖",
+            "rarity": "common",
+            "time": 12,
+            "requiredLevel": 4,
+            "price": 12800,
+            "emoji": "🐈‍⬛"
+        }
+    ]
+}

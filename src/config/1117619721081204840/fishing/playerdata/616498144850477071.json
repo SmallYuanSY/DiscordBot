@@ -3,11 +3,12 @@
   "userName": "Est",
   "level": 6,
   "money": 65220,
-  "experience": 46024,
+  "experience": 59912,
   "currentRod": "銥製釣竿 <:Iridium_Rod:1287104390724849845>",
   "currentBiome": "海洋",
   "backpack": [
     {
+      "id" : "fishing_rod",
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
       "type": "rod",
       "rarity": "unique",
@@ -23,13 +24,16 @@
       "quantity": 1
     },
     {
+      "id": "wood_boat",
       "name": "木筏 <:Boat:1287270950618005536>",
+      "type": "boat",
       "rarity": "unique",
       "experience": 0,
       "price": 0,
       "quantity": 1
     },
     {
+      "id": "iron_rod",
       "name": "鐵製釣竿 <:iron_rod:1287099753296826519>",
       "type": "rod",
       "rarity": "unique",
@@ -39,12 +43,14 @@
     },
     {
       "name": "安安家的沙漠蜻蜓 <:Flygon:1287312551905853520>",
+      "type": "pat",
       "rarity": "mythical",
       "experience": 100,
       "price": 100,
       "quantity": 1
     },
     {
+      "id": "gold_rod",
       "name": "金釣竿 <:gold_rod:1286423686882132062>",
       "type": "rod",
       "rarity": "unique",
@@ -53,6 +59,7 @@
       "quantity": 1
     },
     {
+      "id": "iridium_rod",
       "name": "銥製釣竿 <:Iridium_Rod:1287104390724849845>",
       "type": "rod",
       "rarity": "unique",
@@ -62,6 +69,7 @@
     },
     {
       "name": "閃光鲤鱼王 <:ShinyMagikarp:1287312494192230442>",
+      "type": "fish",
       "rarity": "legendary",
       "experience": 20,
       "price": 50,
@@ -69,6 +77,7 @@
     },
     {
       "name": "蓋歐卡 <:Kyogre:1287312530724880444>",
+      "type": "fish",
       "rarity": "mythical",
       "experience": 100,
       "price": 100,
@@ -76,12 +85,14 @@
     },
     {
       "name": "瑪納霏 <:Manaphy:1287312510168465418>",
+      "type": "fish",
       "rarity": "legendary",
       "experience": 18,
       "price": 70,
       "quantity": 5
     },
     {
+      "id": "boat",
       "name": "小船 <:boat_adv:1287831014785421393>",
       "type": "boat",
       "rarity": "unique",
@@ -95,9 +106,10 @@
       "rarity": "uncommon",
       "experience": 0,
       "price": 10,
-      "quantity": 2395
+      "quantity": 2067
     },
     {
+      "id": "diamond_rod",
       "name": "鑽石釣竿 <:diamond_rod:1286423662957695086>",
       "type": "rod",
       "rarity": "unique",
@@ -107,55 +119,63 @@
     },
     {
       "name": "金魚 <:goldfish:1286419820216193116>",
+      "type": "fish",
       "rarity": "legendary",
       "experience": 1,
       "price": 120,
-      "quantity": 1132
+      "quantity": 1477
     },
     {
       "name": "虹鱒魚 <:rainbow_trout:1286420062525194310>",
+      "type": "fish",
       "rarity": "rare",
       "experience": 12,
       "price": 40,
-      "quantity": 1232
+      "quantity": 1712
     },
     {
       "name": "鮪魚 <:tuna:1286420230205214772>",
+      "type": "fish",
       "rarity": "uncommon",
       "experience": 8,
       "price": 22,
-      "quantity": 392
+      "quantity": 472
     },
     {
       "name": "粉鮭魚 <:pink_salmon:1286419970753953842>",
+      "type": "fish",
       "rarity": "uncommon",
       "experience": 9,
       "price": 24,
-      "quantity": 399
+      "quantity": 530
     },
     {
       "name": "黑魚 <:blackfish:1286418359830974576>",
+      "type": "fish",
       "rarity": "uncommon",
       "experience": 10,
       "price": 20,
-      "quantity": 388
+      "quantity": 516
     },
     {
       "name": "鱈魚 <:atlantic_cod:1286418321541042228>",
+      "type": "fish",
       "rarity": "common",
       "experience": 5,
       "price": 8,
-      "quantity": 167
+      "quantity": 195
     },
     {
       "name": "綠鱈 <:pollock:1286420025867239508>",
+      "type": "fish",
       "rarity": "rare",
       "experience": 12,
       "price": 30,
-      "quantity": 1182
+      "quantity": 1514
     },
     {
       "name": "尼斯 <:Nessie:1287094573516193802>",
+      "type": "pat",
       "rarity": "mythical",
       "experience": 100,
       "price": 100,
@@ -163,33 +183,36 @@
     },
     {
       "name": "鰻魚 <:Eel:1287821635625287700>",
+      "type": "fish",
       "rarity": "common",
       "experience": 5,
       "price": 5,
-      "quantity": 155
+      "quantity": 190
     },
     {
       "name": "水母 <:jellyfish:1286420524238377010>",
+      "type": "fish",
       "rarity": "common",
       "experience": 4,
       "price": 12,
-      "quantity": 128
+      "quantity": 153
     },
     {
       "name": "赤點石斑魚 <:red_grouper:1286420077255852042>",
+      "type": "fish",
       "rarity": "common",
       "experience": 5,
       "price": 6,
-      "quantity": 125
+      "quantity": 182
     }
   ],
   "biome": "ocean",
   "canGoBiome": [
     "River"
   ],
-  "timer": 1727964721379,
+  "timer": 1728070847910,
   "lastDailyReward": "2024-10-03",
-  "hexTime": "66fea56f",
+  "hexTime": "6700417a",
   "mythicalFishCaught": [
     "安安家的沙漠蜻蜓 <:Flygon:1287312551905853520>",
     "蓋歐卡 <:Kyogre:1287312530724880444>",

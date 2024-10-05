@@ -8,7 +8,9 @@
   "currentBiome": "淡水河",
   "backpack": [
     {
+      "id" : "fishing_rod",
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
+      "type": "rod",
       "rarity": "unique",
       "experience": 0,
       "quantity": 1

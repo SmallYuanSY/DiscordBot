@@ -1,53 +1,65 @@
 {
     "biome": "river",
-    "fish": [
+    "items": [
       {  
         "name": "藍鰓太陽魚 <:bluegill:1286418383947956254>",
+        "type": "fish",
         "rarity": "common",
         "price": 6,
         "experience": 1
       },
       {
-        "name": "魚餌 <:worm:1286420915772719237>",
+        "id": "default_bait",
+      "name": "魚餌 <:worm:1286420915772719237>",
+        "type": "bait",
         "rarity": "common",
         "price": 5,
         "experience": 0
       },
       {
         "name": "河鱸魚 <:perch:1286419981327929407>",
+        "type": "fish",
         "rarity": "common",
         "price": 12,
         "experience": 2
       },
       {
         "name": "雀鱔 <:gar:1286419810179223613>",
+        "type": "fish",
         "rarity": "uncommon",
         "price": 18,
         "experience": 2
       },
       {
         "name": "鯰魚 <:catfish:1286418487308451881>",
+        "type": "fish",
         "rarity": "uncommon",
         "price": 24,
         "experience": 2
       },
       {
         "name": "鯉魚 <:carp:1286418428374024323>",
+        "type": "fish",
         "rarity": "rare",
         "price": 33,
         "experience": 3
       },
       {
         "name": "河豚 <:pufferfish:1286420045106515978>",
+        "type": "fish",
         "rarity": "legendary",
         "price": 50,
         "experience": 5
       },
       {
+        "id": "nessie",
         "name": "尼斯 <:Nessie:1287094573516193802>",
+        "type": "pat",
         "rarity": "mythical",
+        "time": 24,
+        "requiredLevel": 1,
         "price": 100,
         "experience": 100
       }
     ]
-  }
+}

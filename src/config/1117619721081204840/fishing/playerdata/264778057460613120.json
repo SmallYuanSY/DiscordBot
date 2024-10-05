@@ -8,6 +8,7 @@
   "currentBiome": "寶貝湖",
   "backpack": [
     {
+      "id" : "fishing_rod",
       "name": "初級釣竿 <:fishing_rod:1286423711385129041>",
       "type": "rod",
       "rarity": "unique",
@@ -23,7 +24,9 @@
       "quantity": 1
     },
     {
+      "id": "wood_boat",
       "name": "木筏 <:Boat:1287270950618005536>",
+      "type": "boat",
       "rarity": "unique",
       "experience": 0,
       "price": 0,
@@ -31,12 +34,14 @@
     },
     {
       "name": "烏波 <:Wooper:1287312485249974305>",
+      "type": "fish",
       "rarity": "uncommon",
       "experience": 6,
       "price": 27,
       "quantity": 340
     },
     {
+      "id": "default_bait",
       "name": "魚餌 <:worm:1286420915772719237>",
       "type": "bait",
       "rarity": "common",
@@ -46,6 +51,7 @@
     },
     {
       "name": "鲤鱼王 <:Magikarp:1287312518993412227>",
+      "type": "fish",
       "rarity": "common",
       "experience": 4,
       "price": 3,
@@ -53,6 +59,7 @@
     },
     {
       "name": "美納斯 <:Milotic:1287312502035578880>",
+      "type": "fish",
       "rarity": "rare",
       "experience": 10,
       "price": 32,
@@ -60,6 +67,7 @@
     },
     {
       "name": "醜醜鱼 <:Feebas:1287312560554643457>",
+      "type": "fish",
       "rarity": "common",
       "experience": 4,
       "price": 8,
@@ -67,6 +75,7 @@
     },
     {
       "name": "暴鯉龍 <:Gyarados:1287312540015132683>",
+      "type": "fish",
       "rarity": "rare",
       "experience": 10,
       "price": 28,
@@ -74,6 +83,7 @@
     },
     {
       "name": "龍蝦小兵 <:Corphish:1287312567299215400>",
+      "type": "fish",
       "rarity": "uncommon",
       "experience": 6,
       "price": 22,

@@ -1,7 +1,7 @@
 import { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder } from 'discord.js'; 
 import fs from 'fs';
 import { client } from '@/main.js';
-import { getFishingResult } from './fishingLogic.js';
+import { getFishingResult, checkPetFishing, processPetFishingResult, autoPetFishing } from './fishingLogic.js';
 import * as backpack from './backpack.js';
 
 export const command = new SlashCommandBuilder()
@@ -35,10 +35,15 @@ function generateMainMenu(playerConfig, userId, hexTime, weather, generatePlayer
         .setLabel('魚販')
         .setEmoji('💰')
         .setStyle('Primary');
+    const petButton = new ButtonBuilder()
+        .setCustomId(`pet-${userId}-${hexTime}`)
+        .setLabel('寵物')
+        .setEmoji('🐾')
+        .setStyle('Primary');
 
     let allComponents = [];
     const row1 = new ActionRowBuilder().addComponents(fishingButton, backpackButton, dailyRewardButton);
-    const row2 = new ActionRowBuilder().addComponents(shopButton, sellButton);
+    const row2 = new ActionRowBuilder().addComponents(shopButton, sellButton, petButton);
     allComponents.push(row1, row2);
 
     // 檢查是否有船隻
@@ -81,6 +86,23 @@ function countItems(backpack, rarities, type = null) {
     });
     return count.toString();
 }
+
+// 在文件頂部添加這個函數
+async function safeReply(interaction, content) {
+    try {
+        if (interaction.replied || interaction.deferred) {
+            await interaction.editReply(content);
+        } else {
+            await interaction.reply(content);
+        }
+    } catch (error) {
+        console.error("回覆訊息時發生錯誤：", error);
+        // 如果回覆失敗，我們不再嘗試其他操作
+    }
+}
+
+// 在文件頂部添加這個變量
+let isFishing = false;
 
 export const action = async (ctx) => {
 
@@ -146,6 +168,8 @@ export const action = async (ctx) => {
     // 處理按鈕互動邏輯
     const handleInteraction = async (interaction) => {
         if (!interaction.isButton()) return;
+        
+        // 每次互動時重新讀取玩家資料
         let playerConfig = JSON.parse(fs.readFileSync(dirPath));
         const currentTime = Math.floor(Date.now() / 1000);
         const playerTime = parseInt(playerConfig.hexTime, 16);
@@ -153,7 +177,7 @@ export const action = async (ctx) => {
         const timeDiff = currentTime - playerTime;
         const formattedMoney = playerConfig.money.toLocaleString('en-US');
 
-            // 確認互動是針對當前玩家的
+            // 確認互動是針對前玩家
             if (!interaction.customId.includes(`${userId}-${hexTime}`)) return;  // 更精簡的判斷
             if (interaction.user.id !== userId){
                 await interaction.reply({
@@ -171,7 +195,7 @@ export const action = async (ctx) => {
                     console.log('Interaction already deferred or replied.');
                 }
             }
-            // 處理延遲互動失��
+            // 處理延遲互動失效
             catch (error) {
                 if (error.status === 503){
                     console.error('誰告訴小元我的AI出問題了？');
@@ -180,16 +204,20 @@ export const action = async (ctx) => {
                 {
                     console.error('Unknown interaction: The interaction has expired or is invalid.');
                 }
+                else if (error.code === 50027)
+                {
+                    console.error('誰告訴小元我的AI出問題了？');
+                }
                 else{
                     console.error('Failed to defer update:', error);
                 }
                 return;
             }
 
-            // 14分鐘後清除互動
+            // 14分鐘後清除動
             if (timeDiff > 840) {
                 await interaction.editReply({
-                    content: '互動已過期，請重新使用指令。',
+                    content: '互動已過期，請重使用指令。',
                     embeds: [],
                     components: [],
                     ephemeral: false
@@ -197,68 +225,120 @@ export const action = async (ctx) => {
                 return;
             }
 
+            // 檢查並執行自動釣魚
+            if (playerConfig.hasPet) {
+                const autoPetResult = autoPetFishing(playerConfig, guildId);
+                if (autoPetResult) {
+                    // 更新玩家數據
+                    fs.writeFileSync(dirPath, JSON.stringify(playerConfig, null, 2));
+                    console.log('寵物自動釣魚完成');
+                }
+            }
+
             // 釣魚按鈕邏輯
             if (interaction.customId === `fishing-${userId}-${hexTime}`) {
+                if (isFishing) {
+                    await safeReply(interaction, {
+                        content: `釣魚操作正在進行中，請稍後再試！`,
+                        ephemeral: true,
+                    });
+                    return;
+                }
+
                 const currentTime = Date.now();
                 const lastFishTime = playerConfig.timer || 0;
                 const cooldown = 5 * 1000; // 5 秒冷卻時間
 
                 if (currentTime - lastFishTime < cooldown) {
                     const remainingTime = cooldown - (currentTime - lastFishTime);
-                    const minutes = Math.floor(remainingTime / 60000);
-                    const seconds = Math.floor((remainingTime % 60000) / 1000);
-
-                    await interaction.editReply({
-                        content: `還有 ${minutes > 0 ? `${minutes} 分 ` : ''}${seconds} 秒才能再次釣魚！`,
-                        ephemeral: false,
+                    const seconds = Math.ceil(remainingTime / 1000);
+                    await safeReply(interaction, {
+                        content: `還有 ${seconds} 秒才能再次釣魚！`,
+                        ephemeral: true,
                     });
                     return;
                 }
 
-                // 設置計時器
-                playerConfig.timer = currentTime;
+                isFishing = true;
 
                 try {
-                    // 調用外部的釣魚邏輯，處理魚餌消耗
-                    const { fishData, fishQuantity } = getFishingResult(playerConfig, guildId);
+                    const result = await getFishingResult(playerConfig, guildId);
 
-                    // 增加魚到背包
-                    let existFish = playerConfig.backpack.find(item => item.name === fishData.name);
-                    if (existFish) {
-                        existFish.quantity += fishQuantity; // 增加數量
+                    if (result.isPet) {
+                        // 處理釣到寵物的情況
+                        let existPet = playerConfig.backpack.find(item => item.id === result.petData.id && item.type === 'pet');
+                        if (existPet) {
+                            existPet.quantity += 1;
+                        } else {
+                            playerConfig.backpack.push({
+                                id: result.petData.id,
+                                name: result.petData.name,
+                                type: 'pet',
+                                rarity: result.petData.rarity,
+                                time: result.petData.time,
+                                quantity: 1
+                            });
+                        }
+
+                        embed.title = '🎉 釣到寵物了！ 🎉';
+                        embed.description = generatePlayerInfo(playerConfig, weather, 
+                            `🎣<@${playerConfig.userId}> 釣到了寵物 ${result.petData.emoji} ${result.petData.name}！`
+                        );
                     } else {
-                        playerConfig.backpack.push({
-                            name: fishData.name,
-                            rarity: fishData.rarity,
-                            experience: fishData.experience,
-                            price: fishData.price,
-                            quantity: fishQuantity // 新增數量
-                        });
+                        // 原有的釣魚邏輯
+                        const { fishData, fishQuantity } = result;
+
+                        // 增加魚到背包
+                        let existFish = playerConfig.backpack.find(item => item.name === fishData.name);
+                        if (existFish) {
+                            existFish.quantity += fishQuantity;
+                        } else {
+                            playerConfig.backpack.push({
+                                name: fishData.name,
+                                rarity: fishData.rarity,
+                                experience: fishData.experience,
+                                price: fishData.price,
+                                quantity: fishQuantity
+                            });
+                        }
+
+                        // 更新玩家經驗
+                        playerConfig.experience += fishData.experience * fishQuantity;
+                        
+                        // 檢查是否級
+                        const leveledUp = playerLevelUp(playerConfig);
+
+                        // 更新 embed
+                        embed.title = leveledUp ? '⬆️ 等級提升 ⬆️' : '<:fishing_hook:1286423885260263518> 釣魚 <:fishing_hook:1286423885260263518>';
+                        embed.description = generatePlayerInfo(playerConfig, weather, 
+                            `🎣<@${playerConfig.userId}> 釣到了 ${fishData.name}！數量：${fishQuantity}` +
+                            (leveledUp ? '\n恭喜你升級了！' : '')
+                        );
                     }
 
-                    // 更新玩家經驗
-                    playerConfig.experience += fishData.experience * fishQuantity;
+                    // 更新計時器
+                    playerConfig.timer = Date.now();
                     
-                    // 檢查是否升級
-                    if (playerLevelUp(playerConfig)) {
-                        embed.title = '⬆️ 等級提升 ⬆️';
-                        embed.description = generatePlayerInfo(playerConfig, weather, `🎣<@${playerConfig.userId}> 釣了 ${fishData.name}！數量：${fishQuantity}`);
-                    } else {
-                        // 更新 embed 並回覆
-                        embed.title = '<:fishing_hook:1286423885260263518> 釣魚 <:fishing_hook:1286423885260263518>';
-                        embed.description = generatePlayerInfo(playerConfig, weather, `🎣<@${playerConfig.userId}> 釣到了 ${fishData.name}！數量：${fishQuantity}`);
-                    }
-
                     // 更新玩家數據並保存
                     fs.writeFileSync(dirPath, JSON.stringify(playerConfig, null, 2));
-                    await interaction.editReply({ embeds: [embed], components: allComponents, content: '', ephemeral: false });
+
+                    // 更新主選單
+                    const { components: updatedComponents } = generateMainMenu(playerConfig, userId, hexTime, weather, generatePlayerInfo);
+
+                    await interaction.editReply({ 
+                        embeds: [embed], 
+                        components: updatedComponents, 
+                        content: '', 
+                        ephemeral: false 
+                    });
 
                 } catch (error) {
-                    // 捕捉錯誤並返回給玩家
-                    await interaction.editReply({
+                    await safeReply(interaction, {
                         content: error.message,
                         ephemeral: true
                     });
+                } finally {
+                    isFishing = false;
                 }
             }
 
@@ -269,7 +349,7 @@ export const action = async (ctx) => {
                 const { embed, components } = backpack.handleBackpack(interaction, playerConfig, userId, hexTime, weather, generatePlayerInfo);
                 await interaction.editReply({ embeds: [embed], components: components, content: '', ephemeral: false });
             }
-            // 背包魚類按鈕邏輯
+            // 包魚類按鈕邏輯
             else if (interaction.customId === `backpack-${userId}-${hexTime}-fish`) {
                 const { embed, components } = backpack.handleFishItems(interaction, playerConfig, userId, hexTime);
                 await interaction.editReply({ embeds: [embed], components: components, content: '', ephemeral: false });
@@ -292,9 +372,18 @@ export const action = async (ctx) => {
             // 背包魚餌切換邏輯
             else if (interaction.customId.startsWith(`backpack-${userId}-${hexTime}-select-bait`)) {
                 const { embed } = backpack.handleBaitSelection(interaction, playerConfig, userId, hexTime, dirPath, generatePlayerInfo, weather);
-                await interaction.editReply({ embeds: [embed], components: allComponents, content: '', ephemeral: false });
+                
+                // 使用 generateMainMenu 函數重新生成主選單
+                const { components: updatedComponents } = generateMainMenu(playerConfig, userId, hexTime, weather, generatePlayerInfo);
+                
+                await interaction.editReply({ 
+                    embeds: [embed], 
+                    components: updatedComponents, 
+                    content: '', 
+                    ephemeral: false 
+                });
             }
-            // 背包特殊物品按鈕邏輯
+            // 背包特殊品按鈕邏輯
             else if (interaction.customId === `backpack-${userId}-${hexTime}-special`) {
                 const { embed } = backpack.handleSpecialItems(interaction, playerConfig, userId, hexTime);
                 await interaction.editReply({ embeds: [embed], components: allComponents, content: '', ephemeral: false });
@@ -322,7 +411,7 @@ export const action = async (ctx) => {
                 
                 // 檢查玩家是否已經領取過獎勵
                 if (formattedDate === playerDailyTime) {
-                    await interaction.editReply({ content: '你今天已經領取過獎勵了！', ephemeral: false });
+                    await safeReply(interaction, { content: '你今天已經領取過獎勵了！', ephemeral: false });
                     return;
                 }
                 else {
@@ -331,7 +420,7 @@ export const action = async (ctx) => {
                     // 根據當前星期獲取獎勵
                     const todayReward = dailyRewards[currentDay];
                 
-                    // 獎勵金額
+                    // 獎金額
                     const rewardAmount = todayReward.money;
                     playerConfig.money += rewardAmount;
                 
@@ -363,7 +452,7 @@ export const action = async (ctx) => {
                         rewardMessage += ` 並且獲得了道具：${itemsMessage}`;
                     }
                     // 回應玩家
-                    await interaction.editReply({ content: rewardMessage, ephemeral: false });
+                    await safeReply(interaction, { content: rewardMessage, ephemeral: false });
                     }
                 
             }
@@ -436,7 +525,7 @@ export const action = async (ctx) => {
                     }
                     fs.writeFileSync(dirPath, JSON.stringify(playerConfig, null, 2)); // 保存配置
                     embed.title = '<:Boat:1287270950618005536> 船隻切換成功 <:Boat:1287270950618005536>';
-                    embed.description = generatePlayerInfo(playerConfig, weather, `🎣<@${playerConfig.userId}> 你已經切換到 ${playerConfig.currentBiome}！`);
+                    embed.description = generatePlayerInfo(playerConfig, weather, `<@${playerConfig.userId}> 你已經切換到 ${playerConfig.currentBiome}！`);
                 }
                 await interaction.editReply({ embeds: [embed], components: allComponents, content: '', ephemeral: false });
             }
@@ -449,20 +538,17 @@ export const action = async (ctx) => {
             }
 
 
-            // 購買商店按鈕邏輯
+            // 修改購買商店按鈕邏輯
             else if (interaction.customId === `FishingShop-${userId}-${hexTime}-shop`) {
-            
-                // 生成釣和魚餌的嵌入信息
                 let shopEmbed = {
                     title: '<:fishing_hook:1286423885260263518> 商店 <:fishing_hook:1286423885260263518>',
                     description: '選擇你想購買的類別：',
                     fields: []
                 };
-            
-                // ��始化按鈕行表
+
                 let allComponents = [];
                 let currentRow = new ActionRowBuilder();
-            
+
                 // 添加分類按鈕
                 currentRow.addComponents(
                     new ButtonBuilder()
@@ -483,7 +569,7 @@ export const action = async (ctx) => {
                 );
                 
                 allComponents.push(currentRow);
-            
+
                 // 添加返回按鈕
                 const backButtonRow = new ActionRowBuilder().addComponents(
                     new ButtonBuilder()
@@ -491,279 +577,139 @@ export const action = async (ctx) => {
                         .setLabel('返回')
                         .setStyle('Secondary')
                 );
-            
-                // 發送分類選擇
+
+                allComponents.push(backButtonRow);
+
                 await interaction.editReply({
                     embeds: [shopEmbed],
-                    components: [...allComponents, backButtonRow],
+                    components: allComponents,
                     content: '',
                     ephemeral: false
                 });
             }
-            // 購買商店處理釣竿類別
-            else if (interaction.customId === `FishingShop-${userId}-${hexTime}-rods`) {
-                const rodsData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/rods.json`));
-                const playerlevel = playerConfig.level;
-                // 過濾玩家等級合適的釣竿
-                const rodItems = rodsData.rods.filter(item => item.requiredLevel <= playerlevel);
-            
-                let rodEmbed = {
-                    title: '<:fishing_rod:1286423711385129041> 釣竿 <:fishing_rod:1286423711385129041>',
-                    description: '購買你需要的釣竿來釣魚！',
+
+            // 添加新的商店類別處理邏輯
+            else if (interaction.customId.startsWith(`FishingShop-${userId}-${hexTime}-`) && 
+                     ['rods', 'bait', 'boat'].includes(interaction.customId.split('-').pop())) {
+                const category = interaction.customId.split('-').pop();
+                let items;
+                let shopEmbed = {
+                    title: '',
+                    description: '選擇你想購買的物品：',
                     fields: []
                 };
-            
-                let allComponents = [];
-                let currentRow = new ActionRowBuilder();
-                let buttonCount = 0;
-            
-                rodItems.forEach(item => {
-                    rodEmbed.fields.push({
-                        name: `${item.name} - $${item.sellPrice}`,
-                        value: item.description,
-                        inline: true
-                    });
-            
-                    // 添加商品的按鈕
-                    const button = new ButtonBuilder()
-                        .setCustomId(`FishingShop-${userId}-${hexTime}-buy-${removeEmoji(item.id)}`)
-                        .setLabel(`購買 ${removeEmoji(item.name)}`)
-                        .setStyle('Primary');
-            
-                    const emoji = getEmoji(item.name);
-                    if (emoji) {
-                        button.setEmoji(emoji); // 如果有 emoji 就添加
-                    }
-            
-                    currentRow.addComponents(button);
-                    buttonCount++;
-            
-                    // 每 5 個按鈕換一行
-                    if (buttonCount === 5) {
-                        allComponents.push(currentRow);
-                        currentRow = new ActionRowBuilder();
-                        buttonCount = 0;
-                    }
-                });
-            
-                // 添加最後一行按鈕
-                if (buttonCount > 0) {
-                    allComponents.push(currentRow);
+
+                switch (category) {
+                    case 'rods':
+                        items = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/rods.json`)).rods;
+                        shopEmbed.title = '🎣 釣竿商店';
+                        break;
+                    case 'bait':
+                        items = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/bait.json`)).baits;
+                        shopEmbed.title = '🪱 魚餌商店';
+                        break;
+                    case 'boat':
+                        items = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/boat.json`)).boat;
+                        shopEmbed.title = '🚤 船隻商店';
+                        break;
                 }
-            
-                // 添加返回按鈕
-                const backButtonRow = new ActionRowBuilder().addComponents(
-                    new ButtonBuilder()
-                        .setCustomId(`FishingShop-${userId}-${hexTime}-shop`)
-                        .setLabel('返回')
-                        .setStyle('Secondary')
-                );
-            
-                // 發送釣竿信息與按鈕
-                await interaction.editReply({
-                    embeds: [rodEmbed],
-                    components: [...allComponents, backButtonRow],
-                    content: '',
-                    ephemeral: false
-                });
-            }
-            // 購買商店處理魚餌類別
-            else if (interaction.customId === `FishingShop-${userId}-${hexTime}-bait`) {
-                const baitData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/bait.json`));
-                const playerlevel = playerConfig.level;
-                // 過濾玩家等級合適的魚餌
-                const baitItems = baitData.baits.filter(item => item.requiredLevel <= playerlevel);
-            
-                let baitEmbed = {
-                    title: '<:worm:1286420915772719237> 魚餌 <:worm:1286420915772719237>',
-                    description: '購買魚餌來進行釣魚！',
-                    fields: []
-                };
-            
-                let allComponents = [];
-                let currentRow = new ActionRowBuilder();
-                let buttonCount = 0;
-            
-                baitItems.forEach(item => {
-                    baitEmbed.fields.push({
-                        name: `${item.name} - $${item.sellPrice}`,
-                        value: item.description,
-                        inline: true
-                    });
-            
-                    // 添加商品的按鈕
-                    const button = new ButtonBuilder()
-                        .setCustomId(`FishingShop-${userId}-${hexTime}-buy-${removeEmoji(item.id)}`)
-                        .setLabel(`購買 ${removeEmoji(item.name)}`)
-                        .setStyle('Primary');
-            
-                    const emoji = getEmoji(item.name);
-                    if (emoji) {
-                        button.setEmoji(emoji); // 如果有 emoji 就添加
-                    }
-            
-                    currentRow.addComponents(button);
-                    buttonCount++;
-            
-                    // 每 5 個按鈕換一行
-                    if (buttonCount === 5) {
-                        allComponents.push(currentRow);
-                        currentRow = new ActionRowBuilder();
-                        buttonCount = 0;
-                    }
-                });
-            
-                // 添加最後一行按鈕
-                if (buttonCount > 0) {
-                    allComponents.push(currentRow);
-                }
-            
-                // 添加返回按鈕
-                const backButtonRow = new ActionRowBuilder().addComponents(
-                    new ButtonBuilder()
-                        .setCustomId(`FishingShop-${userId}-${hexTime}-shop`)
-                        .setLabel('返回')
-                        .setStyle('Secondary')
-                );
-            
-                // 發送魚餌信息與按鈕
-                await interaction.editReply({
-                    embeds: [baitEmbed],
-                    components: [...allComponents, backButtonRow],
-                    content: '',
-                    ephemeral: false
-                });
-            }
-            // 購買商店處理魚船類別
-            else if (interaction.customId === `FishingShop-${userId}-${hexTime}-boat`) {
-                const boatData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/boat.json`));
-                const playerlevel = playerConfig.level;
-                // 用物品type來過濾船隻
-                const boatItems = boatData.boat.filter(item => item.requiredLevel <= playerlevel);
-            
-                let boatEmbed = {
-                    title: '<:Boat:1287270950618005536> 船隻 <:Boat:1287270950618005536>',
-                    description: '購買船隻來進行釣魚！',
-                    fields: []
-                };
-            
-                let allComponents = [];
-                let currentRow = new ActionRowBuilder();
-                let buttonCount = 0;
-            
-                boatItems.forEach(item => {
-                    boatEmbed.fields.push({
-                        name: `${item.name} - $${item.sellPrice}`,
-                        value: item.description,
-                        inline: true
-                    });
-            
-                    // 添加商品的按鈕
-                    const button = new ButtonBuilder()
-                        .setCustomId(`FishingShop-${userId}-${hexTime}-buy-${removeEmoji(item.id)}`)
-                        .setLabel(`購買 ${removeEmoji(item.name)}`)
-                        .setStyle('Primary');
-            
-                    const emoji = getEmoji(item.name);
-                    if (emoji) {
-                        button.setEmoji(emoji); // 如果有 emoji 就添加
-                    }
-            
-                    currentRow.addComponents(button);
-                    buttonCount++;
-            
-                    // 每 5 個按鈕換一行
-                    if (buttonCount === 5) {
-                        allComponents.push(currentRow);
-                        currentRow = new ActionRowBuilder();
-                        buttonCount = 0;
-                    }
-                });
-            
-                // 添加最後一行按鈕
-                if (buttonCount > 0) {
-                    allComponents.push(currentRow);
-                }
-            
-                // 添加返回按鈕
-                const backButtonRow = new ActionRowBuilder().addComponents(
-                    new ButtonBuilder()
-                        .setCustomId(`FishingShop-${userId}-${hexTime}-shop`)
-                        .setLabel('返回')
-                        .setStyle('Secondary')
-                );
-            
-                // 發送魚信息與按鈕
-                await interaction.editReply({
-                    embeds: [boatEmbed],
-                    components: [...allComponents, backButtonRow],
-                    content: '',
-                    ephemeral: false
-                });
-            }
-            // 購買商品按鈕邏輯
-            else if (interaction.customId.startsWith(`FishingShop-${userId}-${hexTime}-buy`)) {
-                const itemIdInCustomId = interaction.customId.split('-').slice(4).join('-'); // 提取 item 的 ID
-                let item = null;
-            
-                // 檢查是否是釣竿購買
-                if (interaction.customId.includes('rod')) {
-                    const rodsData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/rods.json`));
-                    item = rodsData.rods.find(i => i.id === itemIdInCustomId);
-                }
-                // 檢查是否是魚餌購買
-                else if (interaction.customId.includes('bait')) {
-                    const baitData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/bait.json`));
-                    item = baitData.baits.find(i => i.id === itemIdInCustomId);
-                }
-                // 檢查是否是船隻購買
-                else if (interaction.customId.includes('boat')) {
-                    const boatData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/boat.json`));
-                    item = boatData.boat.find(i => i.id === itemIdInCustomId);
-                }
-            
-                // 如果沒有找到商品，返回錯誤訊息
-                if (!item) {
-                    await interaction.editReply({ content: '找不到該物品！', ephemeral: false });
-                    return;
-                }
-            
-                // 檢查玩家是否有足夠的金錢
-                if (playerConfig.money >= item.sellPrice) {
-                    playerConfig.money -= item.sellPrice;
+
+                const availableItems = items.filter(item => playerConfig.level >= (item.requiredLevel || 0));
+                
+                if (availableItems.length === 0) {
+                    shopEmbed.description = '你的等級還不足以購買任何物品。請繼續提升等級！';
+                } else {
+                    const itemButtons = availableItems.map(item => 
+                        new ButtonBuilder()
+                            .setCustomId(`FishingShop-${userId}-${hexTime}-buy-${item.id || item.name}`)
+                            .setLabel(`購買 ${item.name.split(' ')[0]} ($${item.price || item.sellPrice})`)
+                            .setStyle('Primary')
+                    );
                     
-                    // 將商品添加到玩家背包
-                    let existItem = playerConfig.backpack.find(i => i.name === item.name);
-                    if (existItem) {
-                        existItem.quantity += item.quantity;
-                    } else {
-                        playerConfig.backpack.push({
+                    const rows = [];
+                    for (let i = 0; i < itemButtons.length; i += 5) {
+                        rows.push(new ActionRowBuilder().addComponents(itemButtons.slice(i, i + 5)));
+                    }
+
+                    const backButton = new ButtonBuilder()
+                        .setCustomId(`FishingShop-${userId}-${hexTime}-shop`)
+                        .setLabel('返回')
+                        .setStyle('Secondary');
+                    rows.push(new ActionRowBuilder().addComponents(backButton));
+
+                    await interaction.editReply({
+                        embeds: [shopEmbed],
+                        components: rows,
+                        content: '',
+                        ephemeral: false
+                    });
+                }
+            }
+
+            // 修改購買物品邏輯
+            else if (interaction.customId.startsWith(`FishingShop-${userId}-${hexTime}-buy-`)) {
+                const itemId = interaction.customId.split('-').pop();
+                let item;
+                let itemType;
+
+                // 根據物品ID查找對應的物品
+                const rodData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/rods.json`));
+                const baitData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/bait.json`));
+                const boatData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/boat.json`));
+
+                if (item = rodData.rods.find(r => r.id === itemId || r.name === itemId)) {
+                    itemType = 'rod';
+                } else if (item = baitData.baits.find(b => b.id === itemId || b.name === itemId)) {
+                    itemType = 'bait';
+                } else if (item = boatData.boat.find(b => b.id === itemId || b.name === itemId)) {
+                    itemType = 'boat';
+                }
+
+                if (item && playerConfig.level >= (item.requiredLevel || 0)) {
+                    const price = itemType === 'bait' ? item.sellPrice : (item.price || item.sellPrice);
+                    const quantity = itemType === 'bait' ? item.quantity : 1;
+                    const totalPrice = price * quantity;
+
+                    if (playerConfig.money >= totalPrice) {
+                        playerConfig.money -= totalPrice;
+                        
+                        // 將物品添加到背包
+                        const newItem = {
+                            id: item.id,
                             name: item.name,
-                            type: item.type,
-                            rarity: item.rarity,
-                            experience: item.experience || 0,  // 魚餌可能沒有經驗屬性，預設為 0
-                            price: item.price,
-                            quantity: item.quantity || 1  // 如果商品沒有設置數量，預設為 1
+                            type: itemType,
+                            rarity: item.rarity || 'common',
+                            experience: item.experience || 0,
+                            price: item.price || 0,
+                            quantity: quantity
+                        };
+                        
+                        let existingItem = playerConfig.backpack.find(i => i.id === newItem.id && i.type === itemType);
+                        if (existingItem) {
+                            existingItem.quantity += quantity;
+                        } else {
+                            playerConfig.backpack.push(newItem);
+                        }
+
+                        fs.writeFileSync(dirPath, JSON.stringify(playerConfig, null, 2));
+
+                        await safeReply(interaction, {
+                            content: `恭喜！你花費 $${totalPrice} 購買了 ${quantity} 個 ${item.name}！`,
+                            ephemeral: false
+                        });
+                    } else {
+                        await safeReply(interaction, {
+                            content: `你的金錢不足以購買 ${quantity} 個 ${item.name}。需要 $${totalPrice}。`,
+                            ephemeral: false
                         });
                     }
-            
-                    // 更新玩家資料
-                    fs.writeFileSync(dirPath, JSON.stringify(playerConfig, null, 2));
-                    playerConfig = JSON.parse(fs.readFileSync(dirPath));
-            
-                    await interaction.editReply({
-                        content: `你購買了 ${item.name}！`,
-                        ephemeral: false
-                    });
                 } else {
-                    await interaction.editReply({
-                        content: `你的金錢不足以購買 ${item.name}！`,
+                    await safeReply(interaction, {
+                        content: `你無法購買這個物品。可能是等級不足或該物品不存在。`,
                         ephemeral: false
                     });
                 }
             }
-
-
             // 販賣魚類按鈕邏輯
             else if (interaction.customId === `FishingShop-${userId}-${hexTime}-sell`) {
                 // 從玩家的背包中獲取魚
@@ -771,7 +717,7 @@ export const action = async (ctx) => {
                 let sellableFish = playerData.backpack.filter(item => item.rarity !== 'unique' && item.rarity !== 'mythical') // 過濾掉稀有度為 unique跟 mythical 的魚
 
                 if (sellableFish.length === 0) {
-                    await interaction.editReply({ content: '你沒有可以賣的魚！', ephemeral: false });
+                    await safeReply(interaction, { content: '你沒有可以賣的魚！', ephemeral: false });
                     return;
                 }
 
@@ -782,22 +728,24 @@ export const action = async (ctx) => {
                     fields: []
                 };
 
-                let currentRow = new ActionRowBuilder();
                 let allComponents = [];
                 let buttonCount = 0;
 
-                sellableFish.forEach(fish => {
+                for (let i = 0; i < sellableFish.length; i++) {
+                    const fish = sellableFish[i];
                     sellFishEmbed.fields.push({
                         name: `${fish.name} x${fish.quantity}`,
                         value: `價格: ${fish.price} x ${fish.quantity} = $${fish.price * fish.quantity}`,
                         inline: true
                     });
 
-                    
+                    if (buttonCount % 5 === 0) {
+                        allComponents.push(new ActionRowBuilder());
+                    }
 
                     // 添加魚的按鈕
                     const button = new ButtonBuilder()
-                        .setCustomId(`FishingShop-${userId}-${hexTime}-sell-${fish.name}`)
+                        .setCustomId(`FishingShop-${userId}-${hexTime}-sell-${i}`) // 使用索引作為唯一標識符
                         .setLabel(removeEmoji(fish.name))
                         .setStyle('Secondary');
 
@@ -806,30 +754,20 @@ export const action = async (ctx) => {
                         button.setEmoji(emoji); // 如果有emoji就添加
                     }
 
-                    currentRow.addComponents(button);
+                    allComponents[Math.floor(buttonCount / 5)].addComponents(button);
                     buttonCount++;
-
-                    // 每5個按鈕，創建新的ActionRow
-                    if (buttonCount === 5) {
-                        allComponents.push(currentRow);
-                        currentRow = new ActionRowBuilder(); // 創建新的行
-                        buttonCount = 0;
-                    }
-                });
-
-                // 如果還有剩餘的按鈕，將剩下的行添加到allComponents
-                if (buttonCount > 0) {
-                    allComponents.push(currentRow);
                 }
 
-                // 最後添加返回按鈕，不會重複
+                // 添加返回按鈕
                 const backButton = new ButtonBuilder()
                     .setCustomId(`FishingShop-${userId}-${hexTime}-back`)
                     .setLabel('返回')
                     .setStyle('Secondary');
 
-                let backButtonRow = new ActionRowBuilder().addComponents(backButton);
-                allComponents.push(backButtonRow);
+                if (buttonCount % 5 === 0) {
+                    allComponents.push(new ActionRowBuilder());
+                }
+                allComponents[Math.floor(buttonCount / 5)].addComponents(backButton);
 
                 // 回覆結果
                 await interaction.editReply({
@@ -840,10 +778,11 @@ export const action = async (ctx) => {
                 });
             }
             // 販賣出魚的邏輯
-            else if (interaction.customId.startsWith(`FishingShop-${userId}-${hexTime}-sell`)) {
+            else if (interaction.customId.startsWith(`FishingShop-${userId}-${hexTime}-sell-`)) {
+                const fishIndex = parseInt(interaction.customId.split('-').pop()); // 獲取魚的索引
                 const playerData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/playerdata/${userId}.json`));
-                const fishName = interaction.customId.split('-')[4]; // 提取魚的名稱
-                let fishItem = playerData.backpack.find(item => item.name === fishName);
+                let sellableFish = playerData.backpack.filter(item => item.rarity !== 'unique' && item.rarity !== 'mythical');
+                const fishItem = sellableFish[fishIndex];
 
                 if (fishItem) {
                     // 賣魚並賺取金錢
@@ -851,12 +790,17 @@ export const action = async (ctx) => {
                     playerData.money += fishPrice;
 
                     // 從背包中移除魚
-                    playerData.backpack = playerData.backpack.filter(item => item.name !== fishName);
+                    playerData.backpack = playerData.backpack.filter(item => item.name !== fishItem.name);
                     fs.writeFileSync(`src/config/${guildId}/fishing/playerdata/${userId}.json`, JSON.stringify(playerData, null, 2));
                     playerConfig = JSON.parse(fs.readFileSync(dirPath));
                     
-                    await interaction.editReply({
-                        content: `你賣出了 ${fishItem.quantity} 條 ${fishName}，並獲得 $${fishPrice}！`,
+                    await safeReply(interaction, {
+                        content: `你賣出了 ${fishItem.quantity} 條 ${fishItem.name}，並獲得 $${fishPrice}！`,
+                        ephemeral: false
+                    });
+                } else {
+                    await safeReply(interaction, {
+                        content: `無法找到該魚。`,
                         ephemeral: false
                     });
                 }
@@ -871,58 +815,382 @@ export const action = async (ctx) => {
                 await interaction.editReply({ embeds: [mainEmbed], components: allComponents, content: '', ephemeral: false });
             }
 
+            // 修改寵物按鈕邏輯
+            else if (interaction.customId === `pet-${userId}-${hexTime}`) {
+                const petData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/pat.json`));
+                let petEmbed = {
+                    title: '🐾 寵物系統 🐾',
+                    description: '',
+                    fields: []
+                };
+
+                if (!playerConfig.currentPet) {
+                    petEmbed.description = '你還沒有選擇寵物。請先購買或選擇一個寵物。';
+                } else {
+                    const currentPet = petData.pat.find(p => p.id === playerConfig.currentPet);
+                    petEmbed.description = `當前寵物：${currentPet.emoji} ${currentPet.name}\n每小時釣魚次數：${currentPet.time}`;
+
+                    const lastFishingTime = playerConfig.lastPetFishingTime ? new Date(playerConfig.lastPetFishingTime) : null;
+                    const nextFishingTime = lastFishingTime ? new Date(lastFishingTime.getTime() + 3600000) : null;
+
+                    if (lastFishingTime) {
+                        petEmbed.fields.push({
+                            name: '上次釣魚時間',
+                            value: lastFishingTime.toLocaleString(),
+                            inline: true
+                        });
+                    }
+
+                    if (nextFishingTime) {
+                        petEmbed.fields.push({
+                            name: '下次釣魚時間',
+                            value: nextFishingTime.toLocaleString(),
+                            inline: true
+                        });
+                    }
+                }
+
+                const petShopButton = new ButtonBuilder()
+                    .setCustomId(`pet-${userId}-${hexTime}-shop`)
+                    .setLabel('寵物商店')
+                    .setEmoji('🏪')
+                    .setStyle('Primary');
+
+                const changePetButton = new ButtonBuilder()
+                    .setCustomId(`pet-${userId}-${hexTime}-change`)
+                    .setLabel('更換寵物')
+                    .setEmoji('🔄')
+                    .setStyle('Primary');
+
+                const petFishingResultButton = new ButtonBuilder()
+                    .setCustomId(`pet-${userId}-${hexTime}-fishing-result`)
+                    .setLabel('寵物釣魚結果')
+                    .setEmoji('🎣')
+                    .setStyle('Primary');
+
+                const backButton = new ButtonBuilder()
+                    .setCustomId(`pet-${userId}-${hexTime}-back`)
+                    .setLabel('返回')
+                    .setStyle('Secondary');
+
+                const row1 = new ActionRowBuilder().addComponents(petShopButton, changePetButton);
+                const row2 = new ActionRowBuilder().addComponents(petFishingResultButton, backButton);
+
+                // 使用原本的主界面功能
+                const { embed: mainEmbed, components: mainComponents } = generateMainMenu(playerConfig, userId, hexTime, weather, generatePlayerInfo);
+
+                // 合併寵物介面和主界面
+                const combinedEmbed = {
+                    ...mainEmbed,
+                    title: petEmbed.title,
+                    description: `${mainEmbed.description}\n\n${petEmbed.description}`,
+                    fields: [...mainEmbed.fields, ...petEmbed.fields]
+                };
+
+                await interaction.editReply({
+                    embeds: [combinedEmbed],
+                    components: [row1, row2],
+                    content: '',
+                    ephemeral: false
+                });
+            }
+
+            // 寵物商店邏輯
+            else if (interaction.customId === `pet-${userId}-${hexTime}-shop`) {
+                const petData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/pat.json`));
+                let petShopEmbed = {
+                    title: '🏪 寵物商店 🏪',
+                    description: '選擇你想購買的寵物：',
+                    fields: []
+                };
+
+                const availablePets = petData.pat.filter(pet => playerConfig.level >= pet.requiredLevel);
+                
+                if (availablePets.length === 0) {
+                    petShopEmbed.description = '你的等級還不足以購買任何寵物。請繼續提升等級！';
+                } else {
+                    const petButtons = availablePets.map(pet => 
+                        new ButtonBuilder()
+                            .setCustomId(`pet-${userId}-${hexTime}-buy-${pet.id}`)
+                            .setLabel(`購買 ${pet.name.split(' ')[0]} ($${pet.price})`)
+                            .setEmoji(pet.emoji)
+                            .setStyle('Primary')
+                    );
+                    
+                    const rows = [];
+                    for (let i = 0; i < petButtons.length; i += 5) {
+                        rows.push(new ActionRowBuilder().addComponents(petButtons.slice(i, i + 5)));
+                    }
+
+                    const backButton = new ButtonBuilder()
+                        .setCustomId(`pet-${userId}-${hexTime}-back`)
+                        .setLabel('返回')
+                        .setStyle('Secondary');
+                    rows.push(new ActionRowBuilder().addComponents(backButton));
+
+                    await interaction.editReply({
+                        embeds: [petShopEmbed],
+                        components: rows,
+                        content: '',
+                        ephemeral: false
+                    });
+                }
+            }
+
+            // 更換寵物邏輯
+            else if (interaction.customId === `pet-${userId}-${hexTime}-change`) {
+                const petData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/pat.json`));
+                let changePetEmbed = {
+                    title: '🔄 更換寵物 🔄',
+                    description: '選擇你想使用的寵物：',
+                    fields: []
+                };
+
+                const playerPets = playerConfig.backpack.filter(item => item.type === 'pet');
+                
+                if (playerPets.length === 0) {
+                    changePetEmbed.description = '你還沒有任何寵物。請先購買寵物！';
+                } else {
+                    const petButtons = playerPets.map(pet => {
+                        const petInfo = petData.pat.find(p => p.id === pet.id);
+                        return new ButtonBuilder()
+                            .setCustomId(`pet-${userId}-${hexTime}-select-${pet.id}`)
+                            .setLabel(`選擇 ${petInfo.name.split(' ')[0]}`)
+                            .setEmoji(petInfo.emoji)
+                            .setStyle('Primary');
+                    });
+                    
+                    const rows = [];
+                    for (let i = 0; i < petButtons.length; i += 5) {
+                        rows.push(new ActionRowBuilder().addComponents(petButtons.slice(i, i + 5)));
+                    }
+
+                    const backButton = new ButtonBuilder()
+                        .setCustomId(`pet-${userId}-${hexTime}-back`)
+                        .setLabel('返回')
+                        .setStyle('Secondary');
+                    rows.push(new ActionRowBuilder().addComponents(backButton));
+
+                    await interaction.editReply({
+                        embeds: [changePetEmbed],
+                        components: rows,
+                        content: '',
+                        ephemeral: false
+                    });
+                }
+            }
+
+            // 購買寵物邏輯
+            else if (interaction.customId.startsWith(`pet-${userId}-${hexTime}-buy-`)) {
+                const petId = interaction.customId.split('-').pop();
+                const petData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/pat.json`));
+                const pet = petData.pat.find(p => p.id === petId);
+
+                if (pet && playerConfig.level >= pet.requiredLevel) {
+                    if (playerConfig.money >= pet.price) {
+                        playerConfig.money -= pet.price;
+                        
+                        // 將寵物添加到背包
+                        const petItem = {
+                            id: pet.id,
+                            name: pet.name,
+                            type: 'pet',
+                            rarity: pet.rarity,
+                            quantity: 1
+                        };
+                        
+                        let existingPet = playerConfig.backpack.find(item => item.id === pet.id && item.type === 'pet');
+                        if (existingPet) {
+                            existingPet.quantity += 1;
+                        } else {
+                            playerConfig.backpack.push(petItem);
+                        }
+
+                        fs.writeFileSync(dirPath, JSON.stringify(playerConfig, null, 2));
+
+                        await safeReply(interaction, {
+                            content: `恭喜！你花費 $${pet.price} 購買了 ${pet.emoji} ${pet.name}！`,
+                            ephemeral: false
+                        });
+                    } else {
+                        await safeReply(interaction, {
+                            content: `你的金錢不足以購買 ${pet.emoji} ${pet.name}。需要 $${pet.price}。`,
+                            ephemeral: false
+                        });
+                    }
+                } else {
+                    await safeReply(interaction, {
+                        content: `你無法購買這個寵物。可能是等級不足或該寵物不存在。`,
+                        ephemeral: false
+                    });
+                }
+            }
+
+            // 選擇寵物邏輯
+            else if (interaction.customId.startsWith(`pet-${userId}-${hexTime}-select-`)) {
+                const petId = interaction.customId.split('-').pop();
+                const petData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/pat.json`));
+                const pet = petData.pat.find(p => p.id === petId);
+
+                if (pet) {
+                    playerConfig.currentPet = pet.id;
+                    fs.writeFileSync(dirPath, JSON.stringify(playerConfig, null, 2));
+
+                    await safeReply(interaction, {
+                        content: `你已選擇 ${pet.emoji} ${pet.name} 作為當前寵物！`,
+                        ephemeral: false
+                    });
+                } else {
+                    await safeReply(interaction, {
+                        content: `無法找到該寵物。`,
+                        ephemeral: false
+                    });
+                }
+            }
+
+            // 寵物返回按鈕邏輯
+            else if (interaction.customId === `pet-${userId}-${hexTime}-back`) {
+                // 返回主選單
+                const { embed, components } = generateMainMenu(playerConfig, userId, hexTime, weather, generatePlayerInfo);
+                await interaction.editReply({ embeds: [embed], components: components, content: '', ephemeral: false });
+            }
+
+            // 修改寵物釣魚結果邏輯
+            else if (interaction.customId === `pet-${userId}-${hexTime}-fishing-result`) {
+                const petData = JSON.parse(fs.readFileSync(`src/config/${guildId}/fishing/pat.json`));
+                const currentPet = petData.pat.find(p => p.id === playerConfig.currentPet);
+
+                let petFishingEmbed = {
+                    title: '🎣 寵物釣魚結果 🎣',
+                    description: '',
+                    fields: []
+                };
+
+                if (!currentPet) {
+                    petFishingEmbed.description = '你還沒有選擇寵物！請先選擇一個寵物。';
+                } else if (!playerConfig.lastPetFishingResult) {
+                    petFishingEmbed.description = `你的寵物 ${currentPet.emoji} ${currentPet.name} 還沒有進行過釣魚。`;
+                } else {
+                    const lastFishingTime = new Date(playerConfig.lastPetFishingTime).toLocaleString();
+                    petFishingEmbed.description = `你的寵物 ${currentPet.emoji} ${currentPet.name} 上次釣魚時間：${lastFishingTime}`;
+
+                    let totalFish = 0;
+                    let totalExperience = 0;
+                    let fishSummary = {};
+
+                    playerConfig.lastPetFishingResult.forEach(result => {
+                        totalFish += result.fishQuantity;
+                        totalExperience += result.petExperience;
+                        if (fishSummary[result.fishData.name]) {
+                            fishSummary[result.fishData.name] += result.fishQuantity;
+                        } else {
+                            fishSummary[result.fishData.name] = result.fishQuantity;
+                        }
+                    });
+
+                    petFishingEmbed.fields.push({
+                        name: '總計',
+                        value: `總共釣到 ${totalFish} 條魚，獲得 ${totalExperience} 經驗`,
+                        inline: false
+                    });
+
+                    petFishingEmbed.fields.push({
+                        name: '魚類統計',
+                        value: Object.entries(fishSummary).map(([name, quantity]) => `${name}: ${quantity}`).join('\n'),
+                        inline: false
+                    });
+
+                    // 顯示下次釣魚時間
+                    const nextFishingTime = new Date(playerConfig.lastPetFishingTime + 3600000).toLocaleString();
+                    petFishingEmbed.fields.push({
+                        name: '下次釣魚時間',
+                        value: nextFishingTime,
+                        inline: false
+                    });
+                }
+
+                const backButton = new ButtonBuilder()
+                    .setCustomId(`pet-${userId}-${hexTime}-back`)
+                    .setLabel('返回')
+                    .setStyle('Secondary');
+
+                const row = new ActionRowBuilder().addComponents(backButton);
+
+                // 使用原本的主界面功能
+                const { embed: mainEmbed, components: mainComponents } = generateMainMenu(playerConfig, userId, hexTime, weather, generatePlayerInfo);
+
+                // 合併寵物釣魚結果和主界面
+                const combinedEmbed = {
+                    ...mainEmbed,
+                    title: petFishingEmbed.title,
+                    description: `${mainEmbed.description}\n\n${petFishingEmbed.description}`,
+                    fields: [...mainEmbed.fields, ...petFishingEmbed.fields]
+                };
+
+                await interaction.editReply({
+                    embeds: [combinedEmbed],
+                    components: [...mainComponents],
+                    content: '',
+                    ephemeral: false
+                });
+            }
+
             // 觸發互動後重置計時器
             if (timeout) {
                 clearTimeout(timeout); // 清除之前的計時器
             }
 
-            // 設定新的計時器
+            // 修改計時器部分
             timeout = setTimeout(async () => {
-                // 關閉互動監聽
                 client.off('interactionCreate', handleInteraction);
-        
+
                 try {
-                    // 使用 await 確保正確獲取回應
-                    const replyMessage = await ctx.fetchReply();
-                    console.log(replyMessage.id);
-            
-                    // 修改回應訊息，使用 ctx.editReply 來處理互動回應
+                    // 嘗試編輯原始消息
                     await ctx.editReply({
                         embeds: [],
                         components: [],
-                        content: '釣魚事件失效，請重新輸入',
-                        ephemeral: false
+                        content: '釣魚事件已失效，請重新輸入 /fishing',
                     });
                     
-                    // 設定另一個計時器，在3秒後刪除訊息
+                    // 3秒後刪除消息
                     setTimeout(async () => {
                         try {
-                            // 確保正確獲取回應訊息並刪除
-                            const deleteMessage = await ctx.fetchReply();
-                            await deleteMessage.delete();
+                            await ctx.deleteReply();
                         } catch (deleteError) {
-                            console.error("刪除訊息時發生錯誤：", deleteError);
+                            console.error("刪除消息時發生錯誤：", deleteError);
                         }
-                    }, 3000); // 3秒後刪除訊息
+                    }, 3000);
                 } catch (error) {
                     console.error("處理超時時發生錯誤：", error);
+                    // 如果無法編輯原消息，我們不再嘗試發送新消息
                 }
-            }, 840000); // 14分鐘（840000毫秒）的計時器
+            }, 120000); // 2分鐘
     };
 
     client.on('interactionCreate', handleInteraction);
 
     try {
         // 初次設置計時器
-        timeout = setTimeout(() => {
+        timeout = setTimeout(async () => {
             client.off('interactionCreate', handleInteraction);
-            if (!ctx.replied && !ctx.deferred) {
-                ctx.editReply({
+            try {
+                await ctx.editReply({
                     embeds: [], 
                     components: [], 
                     content: '你這次的魚塘已經過期，請重新輸入/fishing', 
                     ephemeral: false
                 });
+            } catch (error) {
+                console.error("編輯初始回覆時發生錯誤：", error);
+                // 如果編輯失敗，嘗試發送一條新消息
+                try {
+                    await ctx.followUp({
+                        content: '你這次的魚塘已經過期，請重新輸入/fishing',
+                        ephemeral: true
+                    });
+                } catch (followUpError) {
+                    console.error("發送後續消息時發生錯誤：", followUpError);
+                }
             }
         }, 6000); // 6秒的計時器
     } catch (error) {
